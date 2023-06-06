@@ -4,7 +4,7 @@ namespace GtkFlow {
     }
     
     private class NodeViewLayoutManager : Gtk.LayoutManager {
-        protected override Gtk.SizeRequestMode get_request_mode (Gtk.Widget widget) {
+        protected override Gtk.SizeRequestMode get_request_mode(Gtk.Widget widget) {
             return Gtk.SizeRequestMode.CONSTANT_SIZE;
         }
         
@@ -128,7 +128,7 @@ namespace GtkFlow {
             
             ctr_motion = new Gtk.EventControllerMotion();
             add_controller(ctr_motion);
-            ctr_motion.motion.connect((x,y)=> { process_motion(x,y); });
+            ctr_motion.motion.connect((x, y) => { process_motion(x, y); });
             
             ctr_click = new Gtk.GestureClick();
             add_controller(ctr_click);
@@ -173,7 +173,7 @@ namespace GtkFlow {
                     continue;
                 }
                 
-                var node = (NodeRenderer)nodewidget;
+                var node = (NodeRenderer) nodewidget;
                 if (node.marked) {
                     result.append(node);
                 }
@@ -209,22 +209,22 @@ namespace GtkFlow {
                 int d_x, d_y;
                 Gtk.Allocation node_alloc;
                 resize_node.get_allocation(out node_alloc);
-                d_x = (int)(x-resize_node.click_offset_x-node_alloc.x);
-                d_y = (int)(y-resize_node.click_offset_y-node_alloc.y);
-                int new_width = (int)resize_node.resize_start_width+d_x;
-                int new_height = (int)resize_node.resize_start_height+d_y;
+                d_x = (int) (x-resize_node.click_offset_x-node_alloc.x);
+                d_y = (int) (y-resize_node.click_offset_y-node_alloc.y);
+                int new_width = (int) resize_node.resize_start_width+d_x;
+                int new_height = (int) resize_node.resize_start_height+d_y;
                 resize_node.set_size_request(new_width, new_height);
             }
             
             if (temp_connector != null) {
-                var n = (NodeRenderer)retrieve_node(temp_connected_dock.d.node);
-                temp_connector.width = (int)(x - temp_connector.x-n.get_margin());
-                temp_connector.height = (int)(y - temp_connector.y-n.get_margin());
+                var n = (NodeRenderer) retrieve_node(temp_connected_dock.d.node);
+                temp_connector.width = (int) (x - temp_connector.x-n.get_margin());
+                temp_connector.height = (int) (y - temp_connector.y-n.get_margin());
             }
             
             if (mark_rubberband != null) {
-                mark_rubberband.width = (int)(x - mark_rubberband.x);
-                mark_rubberband.height = (int)(y - mark_rubberband.y);
+                mark_rubberband.width = (int) (x - mark_rubberband.x);
+                mark_rubberband.height = (int) (y - mark_rubberband.y);
                 var nodewidget = get_first_child();
                 Gtk.Allocation node_alloc;
                 Gdk.Rectangle absolute_marked = mark_rubberband;
@@ -259,7 +259,7 @@ namespace GtkFlow {
         private void start_marking(int n_clicks, double x, double y) {
             if (ctr_click.get_current_button() == Gdk.BUTTON_PRIMARY) {
                 if (pick(x, y, Gtk.PickFlags.DEFAULT) == this)
-                    mark_rubberband = {(int)x,(int)y,0,0};
+                    mark_rubberband = { (int) x, (int) y, 0, 0 };
             } else if (ctr_click.get_current_button() == Gdk.BUTTON_SECONDARY) {
                 menu.set_pointing_to({ (int) x, (int) y, 1, 1 });
                 menu.popup();
@@ -269,7 +269,7 @@ namespace GtkFlow {
         internal void start_temp_connector(Dock d) {
             clicked_dock = d;
             if (d.d is GFlow.Sink && d.d.is_linked()) {
-                var sink = (GFlow.Sink)d.d;
+                var sink = (GFlow.Sink) d.d;
                 temp_connected_dock = retrieve_dock(sink.sources.last().nth_data(0));
             } else {
                 temp_connected_dock = d;
@@ -288,9 +288,9 @@ namespace GtkFlow {
             if (ctr_click.get_current_button() != Gdk.BUTTON_PRIMARY) return;
             
             if (temp_connector != null) {
-                var w = pick(x,y,Gtk.PickFlags.DEFAULT);
+                var w = pick(x, y, Gtk.PickFlags.DEFAULT);
                 if (w is Dock) {
-                    var pd = (Dock)w;
+                    var pd = (Dock) w;
                     if (pd.d is GFlow.Source && temp_connected_dock.d is GFlow.Sink
                      || pd.d is GFlow.Sink && temp_connected_dock.d is GFlow.Source) {
                         try {
@@ -383,7 +383,7 @@ namespace GtkFlow {
          * Add a node to this nodeview
          */
         public void add(NodeRenderer n) {
-            n.set_parent (this);
+            n.set_parent(this);
         }
         
         /**
@@ -391,7 +391,7 @@ namespace GtkFlow {
          */
         public void remove(NodeRenderer n) {
             n.n.unlink_all();
-            var child = get_first_child ();
+            var child = get_first_child();
             while (child != null) {
                 if (child == n) {
                     child.unparent();

@@ -17,7 +17,9 @@ namespace GFlow {
             foreach (Source s in sources) {
                 if (s != null) {
                     
-                    unlink(s);}}
+                    unlink(s);
+                }
+            }
         }
     }
 }

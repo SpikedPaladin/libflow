@@ -45,7 +45,7 @@ namespace GFlow {
          * This signal is being triggered, when there is a connection being established
          * from or to this Dock.
          */
-        public signal void linked (Dock d);
+        public signal void linked(Dock d);
 
         /**
          * This signal is being triggered, before a connection is made
@@ -56,7 +56,7 @@ namespace GFlow {
          * signal you implemented, thus always returning true,
          * rendering your code ineffective.
          */
-        public virtual signal bool before_linking (Dock self, Dock other){
+        public virtual signal bool before_linking(Dock self, Dock other) {
             return true;
         }
 
@@ -65,7 +65,7 @@ namespace GFlow {
          * from or to this Dock. If this the last connection of the dock, the
          * boolean parameter last will be set to true.
          */
-        public signal void unlinked (Dock d, bool last);
+        public signal void unlinked(Dock d, bool last);
 
         /**
          * Triggers when the value of this dock changes
@@ -76,40 +76,40 @@ namespace GFlow {
          * Implementations should return true if this dock has at least one
          * connection to another dock
          */
-        public abstract bool is_linked ();
+        public abstract bool is_linked();
 
         /**
          * Implementations should return true if this dock is connected
          * to the supplied dock
          */
-        public abstract bool is_linked_to (Dock dock);
+        public abstract bool is_linked_to(Dock dock);
 
         /**
          * Connect this {@link Dock} to other {@link Dock}
          */
-        public abstract void link (Dock dock) throws GLib.Error;
+        public abstract void link(Dock dock) throws GLib.Error;
         /**
          * Disconnect this {@link Dock} from other {@link Dock}
          */
-        public abstract void unlink (Dock dock) throws GLib.Error;
+        public abstract void unlink(Dock dock) throws GLib.Error;
         /**
          * Disconnect this {@link Dock} from all {@link Dock}s it is connected to
          */
-        public abstract void unlink_all () throws GLib.Error;
+        public abstract void unlink_all() throws GLib.Error;
 
         /**
          * Tries to resolve this Dock's value-type to a displayable string
          */
-        public virtual string determine_typestring () {
-            return this.value_type.name();
+        public virtual string determine_typestring() {
+            return value_type.name();
         }
 
         /**
          * Returs true if this and the supplied dock have
          * same type
          */
-        public virtual bool has_same_type (Dock other) {
-            return this.value_type == other.value_type;
+        public virtual bool has_same_type(Dock other) {
+            return value_type == other.value_type;
         }
     }
 }

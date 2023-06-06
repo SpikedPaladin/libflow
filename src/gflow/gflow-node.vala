@@ -41,19 +41,19 @@ namespace GFlow {
         /**
          * This signal is being triggered when a {@link Sink} is added to this Node
          */
-        public signal void sink_added (Sink s);
+        public signal void sink_added(Sink s);
         /**
          * This signal is being triggered when a {@link Source} is added to this Node
          */
-        public signal void source_added (Source s);
+        public signal void source_added(Source s);
         /**
          * This signal is being triggered when a {@link Sink} is removed from this Node
          */
-        public signal void sink_removed (Sink s);
+        public signal void sink_removed(Sink s);
         /**
          * This signal is being triggered when a {@link Source} is removed from this Node
          */
-        public signal void source_removed (Source s);
+        public signal void source_removed(Source s);
 
         /**
          * This node's name
@@ -63,32 +63,32 @@ namespace GFlow {
          * Determines wheter the user be allowed to remove the node. Otherwise
          * the node can only be removed programmatically
          */
-        public abstract bool deletable { get; set; default=true;}
+        public abstract bool deletable { get; set; default = true; }
         /**
          * Determines wheter the user be allowed to remove the node. Otherwise
          * the node can only be removed programmatically
          */
-        public abstract bool resizable { get; set; default=true;}
+        public abstract bool resizable { get; set; default = true; }
         /**
          * Implementations should destroy all connections of this Node's {@link Sink}s
          * and {@link Source}s when this method is executed
          */
-        public abstract void unlink_all ();
+        public abstract void unlink_all();
         /**
          * Determines whether the given from-{@link Node} can be found if we
          * recursively follow all nodes that are connected to this node's {@link Source}s
          */
-        public abstract bool is_recursive_forward (Node from, bool initial=false);
+        public abstract bool is_recursive_forward(Node from, bool initial = false);
         /**
          * Determines whether the given from-{@link Node} can be found if we
          * recursively follow all nodes that are connected to this node's {@link Sink}s
          */
-        public abstract bool is_recursive_backward (Node from, bool initial=false);
+        public abstract bool is_recursive_backward(Node from, bool initial = false);
         /**
          * Implementations should return the {@link Dock} with the given name if they contain
          * any. If not, return null.
          */
-        public abstract Dock? get_dock (string name);
+        public abstract Dock? get_dock(string name);
         /**
          * Implementations should return true if the given {@link Dock} has been
          * assigned to this node
@@ -97,11 +97,11 @@ namespace GFlow {
         /**
          * Return a {@link GLib.List} of this Node's {@link Source}s
          */
-        public abstract unowned List<Source> get_sources ();
+        public abstract unowned List<Source> get_sources();
         /**
          * Return a {@link GLib.List} of this Node's {@link Sink}s
          */
-        public abstract unowned List<Sink> get_sinks ();
+        public abstract unowned List<Sink> get_sinks();
         /**
          * Returns the Nodes that this Node is connected to
          */
@@ -113,26 +113,26 @@ namespace GFlow {
         /**
          * Assign a {@link Source} to this Node
          */
-        public abstract void add_source (Source source) throws NodeError;
+        public abstract void add_source(Source source) throws NodeError;
         /**
          * Remove a {@link Source} from this Node
          */
-        public abstract void remove_source (Source source) throws NodeError;
+        public abstract void remove_source(Source source) throws NodeError;
         /**
          * Return true if the supplied {@link Source} is assigned to this Node
          */
-        public abstract bool has_source (Source s);
+        public abstract bool has_source(Source s);
         /**
          * Assign a {@link Sink} to this Node
          */
-        public abstract void add_sink (Sink sink) throws NodeError;
+        public abstract void add_sink(Sink sink) throws NodeError;
         /**
          * Return true if the supplied {@link Sink} is assigned to this Node
          */
-        public abstract bool has_sink (Sink s);
+        public abstract bool has_sink(Sink s);
         /**
          * Remove a {@link Sink} from this Node
          */
-        public abstract void remove_sink (Sink sink) throws NodeError;
+        public abstract void remove_sink(Sink sink) throws NodeError;
     }
 }

@@ -264,7 +264,7 @@ int main(string[] argv) {
         GLib.ApplicationFlags.FLAGS_NONE
     );
     
-    app.activate.connect (() => {
+    app.activate.connect(() => {
         // Create a new window
         var window = new AdvancedCalculatorWindow(app);
         window.present();

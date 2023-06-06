@@ -161,7 +161,7 @@ namespace GtkFlow {
             menu.set_child(box);
             
             title_label = new Gtk.Label("");
-            title_label.set_markup ("<b>%s</b>".printf(n.name));
+            title_label.set_markup("<b>%s</b>".printf(n.name));
             grid.attach(title_label, 0, 0, 2, 1);
             n.notify["name"].connect(() => {
                 title_label.set_markup("<b>%s</b>".printf(n.name));
@@ -189,7 +189,7 @@ namespace GtkFlow {
                     c = c.get_next_sibling();
                     continue;
                 }
-                var dw = (Dock)c;
+                var dw = (Dock) c;
                 if (dw.d == d) return dw;
                 c = c.get_next_sibling();
             }
@@ -232,7 +232,7 @@ namespace GtkFlow {
         
         private void sink_added(GFlow.Sink s) {
             var dock = new Dock(s);
-            dock.notify["label"].connect(()=> {
+            dock.notify["label"].connect(() => {
                 var lc = (Gtk.GridLayoutChild) grid.get_layout_manager().get_layout_child(dock);
                 grid.attach(dock.label, 1, lc.row, 1, 1);
             });
@@ -242,8 +242,8 @@ namespace GtkFlow {
         
         private void source_added(GFlow.Source s) {
             var dock = new Dock(s);
-            dock.notify["label"].connect(()=> {
-                var lc = (Gtk.GridLayoutChild)this.grid.get_layout_manager().get_layout_child(dock);
+            dock.notify["label"].connect(() => {
+                var lc = (Gtk.GridLayoutChild) grid.get_layout_manager().get_layout_child(dock);
                 grid.attach(dock.label, 1, lc.row, 1, 1);
             });
             grid.attach(dock, 2, 1 + ++n_docks, 1, 1);

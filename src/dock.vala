@@ -25,25 +25,25 @@ namespace GtkFlow {
          */
         public Dock(GFlow.Dock d) {
             this.d = d;
-            this.d.unlinked.connect(()=>{this.queue_draw();});
-            this.d.linked.connect(()=>{this.queue_draw();});
+            d.unlinked.connect(() => { queue_draw(); });
+            d.linked.connect(() => { queue_draw(); });
             var l = new Gtk.Label(d.name);
             l.justify = Gtk.Justification.LEFT;
-            this.label = l;
-            this.label.hexpand = true;
-            this.label.halign = Gtk.Align.FILL;
+            label = l;
+            label.hexpand = true;
+            label.halign = Gtk.Align.FILL;
             
-            this.valign = Gtk.Align.CENTER;
-            this.halign = Gtk.Align.CENTER;
-            this.margin_start = 8;
-            this.margin_end = 8;
-            this.margin_top = 4;
-            this.margin_bottom = 4;
+            valign = Gtk.Align.CENTER;
+            halign = Gtk.Align.CENTER;
+            margin_start = 8;
+            margin_end = 8;
+            margin_top = 4;
+            margin_bottom = 4;
             
-            this.ctr_click = new Gtk.GestureClick();
-            this.add_controller(this.ctr_click);
-            this.ctr_click.pressed.connect((n, x, y) => { this.press_button(n,x,y); });
-            this.d.changed.connect(this.cb_changed);
+            ctr_click = new Gtk.GestureClick();
+            add_controller(ctr_click);
+            ctr_click.pressed.connect((n, x, y) => { press_button(n, x, y); });
+            d.changed.connect(cb_changed);
         }
         
         /**
@@ -54,19 +54,19 @@ namespace GtkFlow {
          * inputs or to provide default values if no connection is present.
          */
         public void set_docklabel(Gtk.Widget w) {
-            this.label.unparent();
-            this.label = w;
-            this.label.hexpand = true;
-            this.label.halign = Gtk.Align.FILL;
+            label.unparent();
+            label = w;
+            label.hexpand = true;
+            label.halign = Gtk.Align.FILL;
         }
         
         private GtkFlow.NodeView? get_nodeview() {
-            var parent = this.get_parent();
+            var parent = get_parent();
             while (true) {
                 if (parent == null) {
                     return null;
                 } else if (parent is NodeView) {
-                    return (NodeView)parent;
+                    return (NodeView) parent;
                 } else {
                     parent = parent.get_parent();
                 }
@@ -74,7 +74,7 @@ namespace GtkFlow {
         }
         
         private void cb_changed(Value? value = null, string? flow_id = null) {
-            var nv = this.get_nodeview();
+            var nv = get_nodeview();
             if (nv == null) {
                 warning("Could not react to dock change: no nodeview");
                 return;
@@ -82,10 +82,10 @@ namespace GtkFlow {
             if (value != null) {
                 last_value = value;
             } else {
-                this.last_value = null;
+                last_value = null;
             }
             nv.queue_draw();
-            this.queue_draw();
+            queue_draw();
         }
         
         /**
@@ -102,7 +102,7 @@ namespace GtkFlow {
             return { 0, 0, 0, 1 };
         }
         
-        protected override void snapshot (Gtk.Snapshot sn) {
+        protected override void snapshot(Gtk.Snapshot sn) {
             var nv = get_nodeview();
             if (nv == null) {
                 warning("Dock could not snapshot: no nodeview");
@@ -121,15 +121,15 @@ namespace GtkFlow {
             cr.set_operator(Cairo.Operator.SOURCE);
             cr.paint();
             cr.restore();
-            if (this.d.is_linked()) {
+            if (d.is_linked()) {
                 Gdk.RGBA dot_color = { 0.0f, 0.0f, 0.0f, 1.0f };
-                if (this.d is GFlow.Source) {
-                    dot_color = this.resolve_color(this, this.last_value);
-                } else if (this.d is GFlow.Sink && this.d.is_linked()) {
-                    var sink = (GFlow.Sink) this.d;
+                if (d is GFlow.Source) {
+                    dot_color = resolve_color(this, last_value);
+                } else if (d is GFlow.Sink && d.is_linked()) {
+                    var sink = (GFlow.Sink) d;
                     var sourcedock = nv.retrieve_dock(sink.sources.nth_data(0));
                     if (sourcedock != null) {
-                        dot_color = sourcedock.resolve_color(this, this.last_value);
+                        dot_color = sourcedock.resolve_color(this, last_value);
                     }
                 }
                 thicc = { 8f, 8f, 8f, 8f };
@@ -147,7 +147,7 @@ namespace GtkFlow {
         }
         
         private void press_button(int n_clicked, double x, double y) {
-            var nv = this.get_nodeview();
+            var nv = get_nodeview();
             if (nv == null) {
                 warning("Dock could not process button press: no nodeview");
                 return;

@@ -27,40 +27,40 @@ namespace GtkFlow {
          */
         public NodeView nodeview {
             get {
-                return this._nodeview;
+                return _nodeview;
             }
             set {
-                if (this._nodeview != null) {
-                    GLib.SignalHandler.disconnect(this._nodeview, this.draw_signal);
+                if (_nodeview != null) {
+                    GLib.SignalHandler.disconnect(_nodeview, draw_signal);
                 }
-                if (this._scrolledwindow != null) {
-                    GLib.SignalHandler.disconnect(this._nodeview, this.hadjustment_signal);
-                    GLib.SignalHandler.disconnect(this._nodeview, this.vadjustment_signal);
+                if (_scrolledwindow != null) {
+                    GLib.SignalHandler.disconnect(_nodeview, hadjustment_signal);
+                    GLib.SignalHandler.disconnect(_nodeview, vadjustment_signal);
                 }
                 if (value == null) {
-                    this._nodeview = null;
-                    this._scrolledwindow = null;
+                    _nodeview = null;
+                    _scrolledwindow = null;
                 } else {
-                    this._nodeview = value;
-                    this._scrolledwindow = null;
+                    _nodeview = value;
+                    _scrolledwindow = null;
                     if (value.get_parent() is Gtk.ScrolledWindow) {
-                        this._scrolledwindow = value.get_parent() as Gtk.ScrolledWindow;
+                        _scrolledwindow = value.get_parent() as Gtk.ScrolledWindow;
                     } else {
                         if (value.get_parent() is Gtk.Viewport) {
                             if (value.get_parent().get_parent() is Gtk.ScrolledWindow) {
-                                this._scrolledwindow = value.get_parent().get_parent() as Gtk.ScrolledWindow;
-                                this.hadjustment_signal = this._scrolledwindow.hadjustment.notify["value"].connect(
-                                    ()=>{this.queue_draw();}
+                                _scrolledwindow = value.get_parent().get_parent() as Gtk.ScrolledWindow;
+                                hadjustment_signal = _scrolledwindow.hadjustment.notify["value"].connect(
+                                    () => { queue_draw(); }
                                 );
-                                this.vadjustment_signal = this._scrolledwindow.vadjustment.notify["value"].connect(
-                                    ()=>{this.queue_draw();}
+                                vadjustment_signal = _scrolledwindow.vadjustment.notify["value"].connect(
+                                    () => { queue_draw(); }
                                 );
                             }
                         }
                     }
-                    this.draw_signal = this._nodeview.draw_minimap.connect(()=>{this.queue_draw(); });
+                    draw_signal = _nodeview.draw_minimap.connect(() => { queue_draw(); });
                 }
-                this.queue_draw();
+                queue_draw();
             }
         }
         
@@ -71,38 +71,38 @@ namespace GtkFlow {
          * Create a new Minimap
          */
         public Minimap() {
-            this.set_size_request(50,50);
+            set_size_request(50,50);
             
-            this.ctr_motion = new Gtk.EventControllerMotion();
-            this.add_controller(this.ctr_motion);
-            this.ctr_click = new Gtk.GestureClick();
-            this.add_controller(this.ctr_click);
+            ctr_motion = new Gtk.EventControllerMotion();
+            add_controller(ctr_motion);
+            ctr_click = new Gtk.GestureClick();
+            add_controller(ctr_click);
             
-            this.ctr_click.pressed.connect((n,x,y)=> {this.do_button_press_event(x,y);});
-            this.ctr_click.end.connect(()=>{this.do_button_release_event(); });
-            this.ctr_motion.motion.connect((x,y)=>{this.do_motion_notify_event(x,y); });
+            ctr_click.pressed.connect((n, x, y) => { do_button_press_event(x, y); });
+            ctr_click.end.connect(do_button_release_event);
+            ctr_motion.motion.connect(do_motion_notify_event);
         }
         
         private void do_button_press_event(double x, double y) {
-            this.move_rubber = true;
+            move_rubber = true;
             double halloc = double.max(0, x - offset_x - rubber_width / 2) * ratio;
             double valloc = double.max(0, y - offset_y - rubber_height / 2) * ratio;
-            this._scrolledwindow.hadjustment.value = halloc;
-            this._scrolledwindow.vadjustment.value = valloc;
+            _scrolledwindow.hadjustment.value = halloc;
+            _scrolledwindow.vadjustment.value = valloc;
         }
         
         private void do_motion_notify_event(double x, double y) {
-            if (!this.move_rubber || this._scrolledwindow == null) {
+            if (!move_rubber || _scrolledwindow == null) {
                 return;
             }
             double halloc = double.max(0, x - offset_x - rubber_width / 2) * ratio;
             double valloc = double.max(0, y - offset_y - rubber_height / 2) * ratio;
-            this._scrolledwindow.hadjustment.value = halloc;
-            this._scrolledwindow.vadjustment.value = valloc;
+            _scrolledwindow.hadjustment.value = halloc;
+            _scrolledwindow.vadjustment.value = valloc;
         }
         
         private void do_button_release_event() {
-            this.move_rubber = false;
+            move_rubber = false;
         }
         
         /**
@@ -111,13 +111,13 @@ namespace GtkFlow {
         public override void snapshot(Gtk.Snapshot sn) {
             Graphene.Rect rect;
             Gtk.Allocation own_alloc;
-            this.get_allocation(out own_alloc);
+            get_allocation(out own_alloc);
             
-            if (this._nodeview != null) {
+            if (_nodeview != null) {
                 Gtk.Allocation nv_alloc;
-                this._nodeview.get_allocation(out nv_alloc);
-                this.offset_x = 0;
-                this.offset_y = 0;
+                _nodeview.get_allocation(out nv_alloc);
+                offset_x = 0;
+                offset_y = 0;
                 int height = 0;
                 int width = 0;
                 if (own_alloc.width > own_alloc.height) {
@@ -129,7 +129,7 @@ namespace GtkFlow {
                     width = own_alloc.width;
                     offset_y = (own_alloc.height - height ) / 2;
                 }
-                this.ratio = (double) nv_alloc.width / width;
+                ratio = (double) nv_alloc.width / width;
                 var child = nodeview.get_first_child();
                 while (child != null) {
                     if (child is Gtk.Popover) {
@@ -137,7 +137,7 @@ namespace GtkFlow {
                         continue;
                     }
                     
-                    var n = (Node)child;
+                    var n = (Node) child;
                     
                     Gtk.Allocation alloc;
                     n.get_allocation(out alloc);
@@ -148,23 +148,23 @@ namespace GtkFlow {
                         color = {0.4f,0.4f,0.4f,0.5f};
                     }
                     rect = Graphene.Rect().init(
-                        (int)(offset_x + alloc.x/ratio),
-                        (int)(offset_y + alloc.y/ratio),
-                        (int)(alloc.width/ratio),
-                        (int)(alloc.height/ratio)
+                        (int) (offset_x + alloc.x/ratio),
+                        (int) (offset_y + alloc.y/ratio),
+                        (int) (alloc.width/ratio),
+                        (int) (alloc.height/ratio)
                     );
                     sn.append_color(color, rect);
                     child = child.get_next_sibling();
                 }
-                if (this._scrolledwindow != null) {
+                if (_scrolledwindow != null) {
                     Gtk.Allocation sw_alloc;
-                    this._scrolledwindow.get_allocation(out sw_alloc);
+                    _scrolledwindow.get_allocation(out sw_alloc);
                     if (sw_alloc.width < nv_alloc.width || sw_alloc.height < nv_alloc.height) {
                         rect = Graphene.Rect().init(
-                            (int)(offset_x + this._scrolledwindow.hadjustment.value / ratio),
-                            (int)(offset_y + this._scrolledwindow.vadjustment.value / ratio),
-                            (int)(sw_alloc.width / ratio),
-                            (int)(sw_alloc.height / ratio)
+                            (int) (offset_x + _scrolledwindow.hadjustment.value / ratio),
+                            (int) (offset_y + _scrolledwindow.vadjustment.value / ratio),
+                            (int) (sw_alloc.width / ratio),
+                            (int) (sw_alloc.height / ratio)
                         );
                         sn.append_color({0.0f,0.2f,0.6f,0.5f}, rect);
                     }
