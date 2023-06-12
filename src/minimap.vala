@@ -1,12 +1,13 @@
-namespace GtkFlow {
+namespace Flow {
+    
     /**
-     * A Widget that draws a minmap of a {@link GtkFlow.NodeView}
+     * A Widget that draws a minmap of a {@link Flow.NodeView}
      *
      * Please set the nodeview property after integrating the referenced
-     * {@link GtkFlow.NodeView} into its respective container
+     * {@link Flow.NodeView} into its respective container
      */
     public class Minimap : Gtk.DrawingArea {
-        private GtkFlow.NodeView? _nodeview = null;
+        private NodeView? _nodeview = null;
         private Gtk.ScrolledWindow? _scrolledwindow = null;
         private ulong draw_signal = 0;
         private ulong hadjustment_signal = 0;
@@ -21,8 +22,8 @@ namespace GtkFlow {
         /**
          * The nodeview that this Minimap should depict
          *
-         * You may either add a {@link GtkFlow.NodeView} directly or a
-         * {@link Gtk.ScrolledWindow} that contains a {@link GtkFlow.NodeView}
+         * You may either add a {@link Flow.NodeView} directly or a
+         * {@link Gtk.ScrolledWindow} that contains a {@link Flow.NodeView}
          * as its child.
          */
         public NodeView nodeview {
@@ -30,9 +31,9 @@ namespace GtkFlow {
                 return _nodeview;
             }
             set {
-                if (_nodeview != null) {
+                if (_nodeview != null)
                     GLib.SignalHandler.disconnect(_nodeview, draw_signal);
-                }
+                
                 if (_scrolledwindow != null) {
                     GLib.SignalHandler.disconnect(_nodeview, hadjustment_signal);
                     GLib.SignalHandler.disconnect(_nodeview, vadjustment_signal);
@@ -49,16 +50,12 @@ namespace GtkFlow {
                         if (value.get_parent() is Gtk.Viewport) {
                             if (value.get_parent().get_parent() is Gtk.ScrolledWindow) {
                                 _scrolledwindow = value.get_parent().get_parent() as Gtk.ScrolledWindow;
-                                hadjustment_signal = _scrolledwindow.hadjustment.notify["value"].connect(
-                                    () => { queue_draw(); }
-                                );
-                                vadjustment_signal = _scrolledwindow.vadjustment.notify["value"].connect(
-                                    () => { queue_draw(); }
-                                );
+                                hadjustment_signal = _scrolledwindow.hadjustment.notify["value"].connect(queue_draw);
+                                vadjustment_signal = _scrolledwindow.vadjustment.notify["value"].connect(queue_draw);
                             }
                         }
                     }
-                    draw_signal = _nodeview.draw_minimap.connect(() => { queue_draw(); });
+                    draw_signal = _nodeview.draw_minimap.connect(queue_draw);
                 }
                 queue_draw();
             }
@@ -108,7 +105,7 @@ namespace GtkFlow {
         /**
          * Draws the minimap. This method is called internally
          */
-        public override void snapshot(Gtk.Snapshot sn) {
+        public override void snapshot(Gtk.Snapshot snapshot) {
             Graphene.Rect rect;
             Gtk.Allocation own_alloc;
             get_allocation(out own_alloc);
@@ -130,35 +127,36 @@ namespace GtkFlow {
                     offset_y = (own_alloc.height - height ) / 2;
                 }
                 ratio = (double) nv_alloc.width / width;
-                var child = nodeview.get_first_child();
-                while (child != null) {
-                    if (child is Gtk.Popover) {
-                        child = child.get_next_sibling();
+                
+                for (var child = nodeview.get_first_child(); child != null; child = child.get_next_sibling()) {
+                    if (!(child is NodeRenderer))
                         continue;
-                    }
                     
-                    var n = (Node) child;
+                    var node = (Node) child;
                     
                     Gtk.Allocation alloc;
-                    n.get_allocation(out alloc);
+                    node.get_allocation(out alloc);
                     Gdk.RGBA color;
-                    if (n.highlight_color != null) {
-                        color = n.highlight_color;
+                    
+                    if (node.highlight_color != null) {
+                        color = node.highlight_color;
                     } else {
-                        color = {0.4f,0.4f,0.4f,0.5f};
+                        color = { 0.4f, 0.4f, 0.4f, 0.5f };
                     }
+                    
                     rect = Graphene.Rect().init(
-                        (int) (offset_x + alloc.x/ratio),
-                        (int) (offset_y + alloc.y/ratio),
-                        (int) (alloc.width/ratio),
-                        (int) (alloc.height/ratio)
+                        (int) (offset_x + alloc.x / ratio),
+                        (int) (offset_y + alloc.y / ratio),
+                        (int) (alloc.width / ratio),
+                        (int) (alloc.height / ratio)
                     );
-                    sn.append_color(color, rect);
-                    child = child.get_next_sibling();
+                    
+                    snapshot.append_color(color, rect);
                 }
                 if (_scrolledwindow != null) {
                     Gtk.Allocation sw_alloc;
                     _scrolledwindow.get_allocation(out sw_alloc);
+                    
                     if (sw_alloc.width < nv_alloc.width || sw_alloc.height < nv_alloc.height) {
                         rect = Graphene.Rect().init(
                             (int) (offset_x + _scrolledwindow.hadjustment.value / ratio),
@@ -166,7 +164,8 @@ namespace GtkFlow {
                             (int) (sw_alloc.width / ratio),
                             (int) (sw_alloc.height / ratio)
                         );
-                        sn.append_color({0.0f,0.2f,0.6f,0.5f}, rect);
+                        
+                        snapshot.append_color({ 0.0f, 0.2f, 0.6f, 0.5f }, rect);
                     }
                 }
             }

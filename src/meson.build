@@ -1,24 +1,14 @@
 lib_deps = [
-    dependency('glib-2.0'),
-    dependency('gobject-2.0'),
     dependency('gtk4')
 ]
 
 lib_sources = files(
-    'gflow/gflow.vala',
-    'gflow/gflow-aggregator.vala',
-    'gflow/gflow-dock.vala',
-    'gflow/gflow-node.vala',
-    'gflow/gflow-simple-node.vala',
-    'gflow/gflow-simple-sink.vala',
-    'gflow/gflow-simple-source.vala',
-    'gflow/gflow-sink.vala',
-    'gflow/gflow-source.vala',
-    
-    'dock.vala',
     'minimap.vala',
     'node.vala',
-    'nodeview.vala',
+    'node-view.vala',
+    'sink.vala',
+    'socket.vala',
+    'source.vala',
 )
 
 install_data(
