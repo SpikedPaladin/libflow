@@ -1,5 +1,5 @@
 # GtkFlowGraph
-[![Chat on telegram](https://img.shields.io/badge/chat-on%20telegram-0088cc.svg)](http://t.me/codefaq)  
+[![Chat on telegram](https://img.shields.io/badge/chat-on%20telegram-0088cc.svg)](http://t.me/vala_lang)  
 
 ![Screenshot](./result.png)
 
