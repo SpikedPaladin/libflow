@@ -6,21 +6,38 @@ namespace Flow {
         private List<Source> sources = new List<Source>();
         private List<Sink> sinks = new List<Sink>();
         
-        private Gtk.Widget _custom_widget;
         private Gtk.Widget _title_widget;
+        private Gtk.Widget _content;
         
         private Gtk.Box main_box;
         private Gtk.Box title_box;
         private Gtk.Box socket_box;
         private Gtk.Box sink_box;
         private Gtk.Box source_box;
-        public Gtk.Widget custom_widget { get { return _custom_widget; } set { _custom_widget = value; main_box.append(value); } }
         public Gtk.Widget title_widget {
             get { return _title_widget; }
             set {
+                if (_title_widget == value)
+                    return;
+                
                 _title_widget?.unparent();
                 _title_widget = value;
-                title_box.append(value);
+                
+                if (_title_widget != null)
+                    title_box.append(_title_widget);
+            }
+        }
+        public Gtk.Widget content {
+            get { return _content; }
+            set {
+                if (_content == value)
+                    return;
+                
+                _content?.unparent();
+                _content = value;
+                
+                if (_content != null)
+                    main_box.append(_content);
             }
         }
         
@@ -91,20 +108,6 @@ namespace Flow {
         private void cb_delete() {
             var node_view = get_parent() as NodeView;
             node_view.remove(this);
-        }
-        
-        /**
-         * Adds a child widget to this node
-         */
-        public void add_child(Gtk.Widget child) {
-            custom_widget = child;
-        }
-        
-        /**
-         * Removes a child widget from this node
-         */
-        public void remove_child(Gtk.Widget child) {
-            child.unparent();
         }
         
         /**
