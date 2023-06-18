@@ -83,14 +83,23 @@ namespace Flow {
             base.dispose();
         }
         
-        private List<unowned NodeRenderer> get_marked_nodes() {
+        public List<unowned NodeRenderer> get_nodes() {
             var result = new List<unowned NodeRenderer>();
             
             for (var child = get_first_child(); child != null; child = child.get_next_sibling()) {
                 if (!(child is NodeRenderer))
                     continue;
                 
-                var node = child as NodeRenderer;
+                result.append(child as NodeRenderer);
+            }
+            
+            return result;
+        }
+        
+        private List<unowned NodeRenderer> get_marked_nodes() {
+            var result = new List<unowned NodeRenderer>();
+            
+            foreach (var node in get_nodes()) {
                 if (node.marked)
                     result.append(node);
             }
@@ -175,13 +184,8 @@ namespace Flow {
                     absolute_marked.y -= absolute_marked.height;
                 }
                 
-                Gdk.Rectangle result;
-                for (var child = get_first_child(); child != null; child = child.get_next_sibling()) {
-                    if (!(child is NodeRenderer)) {
-                        continue;
-                    }
-                    
-                    var node = (NodeRenderer) child;
+                foreach (var node in get_nodes()) {    
+                    Gdk.Rectangle result;
                     
                     node.get_allocation(out node_alloc);
                     node_alloc.intersect(absolute_marked, out result);
@@ -403,14 +407,9 @@ namespace Flow {
                 Graphene.Rect().init(0, 0, (float) get_width(), (float) get_height())
             );
             
-            
-            for (var child = get_first_child(); child != null; child = child.get_next_sibling()) {
-                if (!(child is NodeRenderer))
-                    continue;
-                
-                var node = (NodeRenderer) child;
-                
+            foreach (var node in get_nodes()) {
                 Graphene.Point sink_point, source_point;
+                
                 foreach (Sink sink in node.get_sinks()) {
                     
                     foreach (Source source in sink.sources) {
@@ -519,20 +518,20 @@ namespace Flow {
         }
         
         protected override void allocate(Gtk.Widget widget, int height, int width, int baseline) {
-            for (var child = widget.get_first_child(); child != null; child = child.get_next_sibling()) {
-                if (!(child is NodeRenderer))
-                    continue;
+            var node_view = widget as NodeView;
+            
+            foreach (var node in node_view.get_nodes()) {
+                int node_width, node_height, _;
                 
-                int child_width, child_height, _;
-                child.measure(Gtk.Orientation.HORIZONTAL, -1, out child_width, out _, out _, out _);
-                child.measure(Gtk.Orientation.VERTICAL, -1, out child_height, out _, out _, out _);
+                node.measure(Gtk.Orientation.HORIZONTAL, -1, out node_width, out _, out _, out _);
+                node.measure(Gtk.Orientation.VERTICAL, -1, out node_height, out _, out _, out _);
                 
-                var layout = (NodeViewLayoutChild) get_layout_child(child);
+                var layout = (NodeViewLayoutChild) get_layout_child(node);
                 
-                child.queue_allocate();
-                child.allocate_size({
+                node.queue_allocate();
+                node.allocate_size({
                     layout.x, layout.y,
-                    child_width, child_height
+                    node_width, node_height
                 }, -1);
             }
         }
