@@ -122,6 +122,8 @@ namespace Flow {
                         marked_layout.y -= old_y - layout.y;
                     }
                 }
+                
+                queue_allocate();
             }
             
             if (resize_node != null) {
@@ -145,6 +147,8 @@ namespace Flow {
             if (temp_connector != null) {
                 temp_connector.width = (int) (x - temp_connector.x);
                 temp_connector.height = (int) (y - temp_connector.y);
+                
+                queue_draw();
             }
             
             if (mark_rubberband != null) {
@@ -176,9 +180,9 @@ namespace Flow {
                     node_alloc.intersect(absolute_marked, out result);
                     node.marked = result == node_alloc;
                 }
+                
+                queue_draw();
             }
-            
-            queue_allocate();
         }
         
         
