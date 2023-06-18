@@ -12,10 +12,17 @@ namespace Flow {
          * Color of this socket
          *
          * Be aware that only {@link Source}s dictate the colors of the
-         * connections. If this Socket holds a {@link Sink} it
+         * connections in default {@link ConnectionRenderer}. If this Socket holds a {@link Sink} it
          * will have no visible effect.
          */
         public Gdk.RGBA color { get; set; default = { 0, 0, 0, 1 }; }
+        /**
+         * Line width of this socket
+         * Be aware that only {@link Source}s dictate the line width of the
+         * connections in default {@link ConnectionRenderer}. If this Socket holds a {@link Sink} it
+         * will have no visible effect.
+         */
+        public double line_width { get; set; default = 2; }
         /**
          * Determines whether this socket is highlighted
          * this is usually triggered when the mouse hovers over it

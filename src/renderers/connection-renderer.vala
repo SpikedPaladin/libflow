@@ -4,6 +4,7 @@ namespace Flow {
         
         public virtual void render_connection(Cairo.Context cairo, Socket start, Socket? end, Gdk.Rectangle rect) {
             cairo.set_source_rgba(start.color.red, start.color.green, start.color.blue, start.color.alpha);
+            cairo.set_line_width(start.line_width);
             cairo.move_to(rect.x, rect.y);
             
             if (rect.width > 0)
