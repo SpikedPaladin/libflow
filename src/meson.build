@@ -9,6 +9,8 @@ lib_sources = files(
     'sink.vala',
     'socket.vala',
     'source.vala',
+    
+    'renderers/connection-renderer.vala',
 )
 
 install_data(

@@ -44,6 +44,7 @@ namespace Flow {
          * A rectangle detailing the extents of a rubber marking
          */
         private Gdk.Rectangle? mark_rubberband = null;
+        public ConnectionRenderer renderer = new ConnectionRenderer();
         
         /**
          * Instantiate a new NodeView
@@ -402,7 +403,6 @@ namespace Flow {
                 Graphene.Rect().init(0, 0, (float) get_width(), (float) get_height())
             );
             
-            Gdk.RGBA color = { 0, 0, 0, 1 };
             
             for (var child = get_first_child(); child != null; child = child.get_next_sibling()) {
                 if (!(child is NodeRenderer))
@@ -411,7 +411,6 @@ namespace Flow {
                 var node = (NodeRenderer) child;
                 
                 Graphene.Point sink_point, source_point;
-                double w, h;
                 foreach (Sink sink in node.get_sinks()) {
                     
                     foreach (Source source in sink.sources) {
@@ -423,19 +422,17 @@ namespace Flow {
                         sink.compute_point(this, { 8, 8 }, out sink_point);
                         source.compute_point(this, { 8, 8 }, out source_point);
                         
-                        w = sink_point.x - source_point.x;
-                        h = sink_point.y - source_point.y;
-                        
-                        color = source.color;
-                        
                         cairo.save();
-                        cairo.set_source_rgba(color.red, color.green, color.blue, color.alpha);
-                        cairo.move_to(source_point.x, source_point.y);
                         
-                        if (w > 0)
-                            cairo.rel_curve_to(w / 3, 0, 2 * w / 3, h, w, h);
-                        else
-                            cairo.rel_curve_to(-w / 3, 0, 1.3 * w, h, w, h);
+                        renderer.render_connection(
+                            cairo,
+                            
+                            source, sink,
+                            {
+                                (int) source_point.x, (int) source_point.y,
+                                (int) (sink_point.x - source_point.x), (int) (sink_point.y - source_point.y)
+                            }
+                        );
                         
                         cairo.stroke();
                         cairo.restore();
@@ -444,20 +441,14 @@ namespace Flow {
             }
             draw_minimap();
             if (temp_connector != null) {
-                color = temp_connected_socket.color;
                 
                 cairo.save();
-                cairo.set_source_rgba(color.red, color.green, color.blue, color.alpha);
-                cairo.move_to(temp_connector.x, temp_connector.y);
                 
-                //cairo.rel_curve_to(temp_connector.width, 0, 0, temp_connector.height, temp_connector.width, temp_connector.height);
-                cairo.rel_curve_to(
-                    temp_connector.width / 3,
-                    0,
-                    2 * temp_connector.width / 3,
-                    temp_connector.height,
-                    temp_connector.width,
-                    temp_connector.height
+                renderer.render_temp_connection(
+                    cairo,
+                    
+                    temp_connected_socket,
+                    temp_connector
                 );
                 
                 cairo.stroke();
