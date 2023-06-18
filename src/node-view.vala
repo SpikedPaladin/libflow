@@ -44,7 +44,6 @@ namespace Flow {
          * A rectangle detailing the extents of a rubber marking
          */
         private Gdk.Rectangle? mark_rubberband = null;
-        //private RubberbandProxy? proxy = null;
         
         /**
          * Instantiate a new NodeView
@@ -152,7 +151,6 @@ namespace Flow {
                 mark_rubberband.width = (int) (x - mark_rubberband.x);
                 mark_rubberband.height = (int) (y - mark_rubberband.y);
                 
-                
                 Gtk.Allocation node_alloc;
                 Gdk.Rectangle absolute_marked = mark_rubberband;
                 
@@ -188,8 +186,6 @@ namespace Flow {
             if (click.get_current_button() == Gdk.BUTTON_PRIMARY) {
                 if (pick(x, y, Gtk.PickFlags.DEFAULT) == this) {
                     mark_rubberband = { (int) x, (int) y, 0, 0 };
-                    //proxy = new RubberbandProxy(this);
-                    //proxy.set_size_request(50, 50);
                 }
             } else if (click.get_current_button() == Gdk.BUTTON_SECONDARY) {
                 menu.set_pointing_to({ (int) x, (int) y, 1, 1 });
@@ -266,7 +262,6 @@ namespace Flow {
             
             update_extents();
             queue_resize();
-            //proxy = null;
             mark_rubberband = null;
             queue_allocate();
         }
@@ -461,19 +456,6 @@ namespace Flow {
             
             // Selection rectangle
             if (mark_rubberband != null) {
-                // var style = proxy.get_style_context();
-                
-                // style.save();
-                // style.render_background(cairo,
-                //     mark_rubberband.x, mark_rubberband.y,
-                //     mark_rubberband.width, mark_rubberband.height
-                // );
-                // style.render_frame(cairo,
-                //     mark_rubberband.x, mark_rubberband.y,
-                //     mark_rubberband.width, mark_rubberband.height
-                // );
-                // style.restore();
-                
                 cairo.save();
                 cairo.set_source_rgba(0.0, 0.2, 0.9, 0.4);
                 
@@ -486,21 +468,6 @@ namespace Flow {
                 cairo.set_source_rgba(0.0, 0.2, 1.0, 1.0);
                 cairo.stroke();
             }
-        }
-    }
-    
-    class RubberbandProxy : Gtk.Widget {
-        public RubberbandProxy(Gtk.Widget parent) {
-            Object();
-            set_parent(parent);
-        }
-
-        ~RubberbandProxy() {
-            unparent();
-        }
-
-        static construct {
-            set_css_name("rubberband");
         }
     }
     
