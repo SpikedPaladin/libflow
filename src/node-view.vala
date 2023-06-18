@@ -110,8 +110,14 @@ namespace Flow {
                 int old_x = layout.x;
                 int old_y = layout.y;
                 
-                layout.x = ((int) x - (int) move_node.click_offset_x);
-                layout.y = ((int) y - (int) move_node.click_offset_y);
+                int new_x = ((int) x - (int) move_node.click_offset_x);
+                int new_y = ((int) y - (int) move_node.click_offset_y);
+                
+                if (old_x == new_x && old_y == new_y)
+                    return;
+                
+                layout.x = new_x;
+                layout.y = new_y;
                 
                 if (move_node.marked) {
                     foreach (NodeRenderer node in get_marked_nodes()) {
