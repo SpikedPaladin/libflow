@@ -465,8 +465,7 @@ namespace Flow {
                 );
                 
                 cairo.fill();
-                cairo.set_source_rgba(0.0, 0.2, 1.0, 1.0);
-                cairo.stroke();
+                cairo.restore();
             }
         }
     }
