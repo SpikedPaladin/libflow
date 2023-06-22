@@ -11,6 +11,7 @@ lib_sources = files(
     'source.vala',
     
     'renderers/connection-renderer.vala',
+    'renderers/socket-renderer.vala',
 )
 
 install_data(

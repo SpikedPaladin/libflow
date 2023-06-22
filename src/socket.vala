@@ -1,9 +1,10 @@
 namespace Flow {
     
     public abstract class Socket : Gtk.Widget {
-        public Gtk.Widget label { get; private set; }
         private Gtk.GestureClick click;
         
+        public SocketRenderer renderer { get; set; }
+        public Gtk.Widget label { get; private set; }
         /**
          * The name that will be rendered for this socket
          */
@@ -44,6 +45,8 @@ namespace Flow {
         public GLib.Type value_type { get; construct set; }
         
         construct {
+            renderer = new SocketRenderer();
+            
             linked.connect(queue_draw);
             unlinked.connect(queue_draw);
             
@@ -160,49 +163,9 @@ namespace Flow {
         }
         
         protected override void snapshot(Gtk.Snapshot snapshot) {
-            var rect = Graphene.Rect().init(0, 0, 16, 16);
-            Gdk.RGBA border_color = { 0.5f, 0.5f, 0.5f, 1.0f };
-            
-            snapshot.append_border(
-                Gsk.RoundedRect().init_from_rect(rect, 8),
-                { 1, 1, 1, 1 },
-                { border_color, border_color, border_color, border_color }
-            );
-            
             base.snapshot(snapshot);
             
-            var cairo = snapshot.append_cairo(rect);
-            cairo.save();
-            cairo.set_source_rgba(0, 0, 0, 0);
-            cairo.set_operator(Cairo.Operator.SOURCE);
-            cairo.paint();
-            cairo.restore();
-            
-            if (is_linked()) {
-                Gdk.RGBA dot_color = { 0, 0, 0, 1 };
-                
-                if (this is Source) {
-                    dot_color = color;
-                } else if (this is Sink && is_linked()) {
-                    var sink = (Sink) this;
-                    var source = sink.sources.nth_data(0);
-                    
-                    if (source != null) {
-                        dot_color = source.color;
-                    }
-                }
-                
-                cairo.save();
-                cairo.set_source_rgba(
-                    dot_color.red,
-                    dot_color.green,
-                    dot_color.blue,
-                    dot_color.alpha
-                );
-                cairo.arc(8, 8, 4, 0.0, 2 * Math.PI);
-                cairo.fill();
-                cairo.restore();
-            }
+            renderer.snapshot_socket(snapshot, this);
         }
         
         private void press_button(int n_clicked, double x, double y) {
