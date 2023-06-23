@@ -87,7 +87,7 @@ namespace Flow {
         }
         
         /**
-         * Disconnect from any {@link Socket} that this SimplesSource is connected to
+         * Disconnect from any {@link Socket} that this Source is connected to
          */
         public override void unlink_all() {
             foreach (var sink in _sinks.copy())
@@ -96,7 +96,7 @@ namespace Flow {
         }
         
         /**
-         * Set the value of this SimpleSource
+         * Set the value of this Source
          */
         public void set_value(Value? @value, string? flow_id = null) {
             if (@value != null && value_type == @value.type()) {

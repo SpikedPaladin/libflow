@@ -3,7 +3,7 @@ namespace Flow {
     public class Sink : Socket {
         private List<Source> _sources = new List<Source>();
         /**
-         * The {@link Source}s that this SimpleSink is currently connected to
+         * The {@link Source}s that this Sink is currently connected to
          */
         public List<Source> sources { get { return _sources; } }
         /**
@@ -16,14 +16,14 @@ namespace Flow {
         public uint max_sources { get; set; default = 1; }
         
         /**
-         * Creates a new SimpleSink with type of given value {@link GLib.Value}
+         * Creates a new Sink with type of given value {@link GLib.Value}
          */
         public Sink(Value @value) {
             value_type = @value.type();
         }
         
         /**
-         * Creates a new SimpleSink with given type {@link GLib.Type}
+         * Creates a new Sink with given type {@link GLib.Type}
          */
         public Sink.with_type(Type type) {
             value_type = type;
@@ -93,7 +93,6 @@ namespace Flow {
          * Disconnect from the given {@link Socket}
          */
         public override void unlink(Socket socket) {
-            // Блять тут тоже разное, вникнуть
             if (!is_linked_to(socket))
                 return;
             
