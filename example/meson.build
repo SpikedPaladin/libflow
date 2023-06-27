@@ -8,7 +8,7 @@ example_sources = [
 ]
 
 executable(
-    'gtkflowgraph-sample',
+    'libflow-sample',
     
     example_sources,
     vala_args: '--target-glib=2.58',

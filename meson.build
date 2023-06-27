@@ -1,4 +1,4 @@
-project('gtkflowgraph', ['c', 'vala'],
+project('libflow', ['c', 'vala'],
     default_options: [
         'warning_level=2'
     ],

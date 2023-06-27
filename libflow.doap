@@ -6,7 +6,7 @@
     xmlns:gnome="http://api.gnome.org/doap-extensions#"
     xmlns="http://usefulinc.com/ns/doap#">
     
-    <name xml:lang="en">GtkFlowGraph</name>
+    <name xml:lang="en">libflow</name>
     <shortdesc xml:lang="en">FlowGraph view for Gtk4</shortdesc>
     <description xml:lang="en">Library to create Flow Graphs for Gtk4</description>
     <homepage rdf:resource="https://github.com/SpikedPaladin/GtkFlowGraph"/>

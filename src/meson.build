@@ -31,7 +31,7 @@ lib = library(
 )
 
 pkg.generate(
-    name: 'GtkFlowGraph',
+    name: meson.project_name(),
     description: 'Flow Graph library for Gtk4',
     
     libraries: lib,
