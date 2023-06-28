@@ -1,8 +1,7 @@
-project('libflow', ['c', 'vala'],
-    default_options: [
-        'warning_level=2'
-    ],
+project(
+    'libflow',
     
+    ['c', 'vala'],
     version: '1.0.0',
     meson_version: '>= 0.50.0',
 )
