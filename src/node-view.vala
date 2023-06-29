@@ -46,6 +46,10 @@ namespace Flow {
         private Gdk.Rectangle? mark_rubberband = null;
         public ConnectionRenderer renderer = new ConnectionRenderer();
         
+        static construct {
+            set_css_name("flownodeview");
+        }
+        
         /**
          * Instantiate a new NodeView
          */

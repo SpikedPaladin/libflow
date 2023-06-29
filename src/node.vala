@@ -41,8 +41,11 @@ namespace Flow {
             }
         }
         
+        static construct {
+            set_css_name("flownode");
+        }
+        
         public Node() {
-            add_css_class("card");
             set_layout_manager(new Gtk.BinLayout());
             
             main_box = new Gtk.Box(Gtk.Orientation.VERTICAL, 0) {
