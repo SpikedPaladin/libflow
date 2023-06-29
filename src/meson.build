@@ -24,6 +24,7 @@ install_data(
 lib = library(
     lib_name,
     
+    lib_resources,
     lib_sources,
     dependencies: lib_deps,
     install: true,

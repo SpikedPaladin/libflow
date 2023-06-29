@@ -54,8 +54,12 @@ namespace Flow {
          * Instantiate a new NodeView
          */
         public NodeView() {
+            var css = new Gtk.CssProvider();
+            css.load_from_resource("/me/paladin/libflow/css/flow.css");
+            Gtk.StyleContext.add_provider_for_display(Gdk.Display.get_default(), css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+            
             set_layout_manager(new NodeViewLayoutManager());
-            set_size_request(100,100);
+            set_size_request(100, 100);
             
             motion = new Gtk.EventControllerMotion();
             add_controller(motion);
