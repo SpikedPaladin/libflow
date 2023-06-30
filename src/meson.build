@@ -3,6 +3,7 @@ lib_deps = [
 ]
 
 lib_sources = files(
+    'gizmo.vala',
     'minimap.vala',
     'node.vala',
     'node-view.vala',

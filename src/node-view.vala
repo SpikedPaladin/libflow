@@ -45,6 +45,7 @@ namespace Flow {
          */
         private Gdk.Rectangle? mark_rubberband = null;
         public ConnectionRenderer renderer = new ConnectionRenderer();
+        public Gizmo rubberband;
         
         static construct {
             set_css_name("flownodeview");
@@ -200,15 +201,22 @@ namespace Flow {
                     node.marked = result == node_alloc;
                 }
                 
+                var layout = (NodeViewLayoutChild) layout_manager.get_layout_child(rubberband);
+                layout.x = absolute_marked.x;
+                layout.y = absolute_marked.y;
+                rubberband.set_size_request(absolute_marked.width, absolute_marked.height);
                 queue_draw();
             }
         }
-        
         
         private void start_marking(int n_clicks, double x, double y) {
             if (click.get_current_button() == Gdk.BUTTON_PRIMARY) {
                 if (pick(x, y, Gtk.PickFlags.DEFAULT) == this) {
                     mark_rubberband = { (int) x, (int) y, 0, 0 };
+                    
+                    // TODO fix blinking in left top corner
+                    rubberband = new Gizmo();
+                    rubberband.set_parent(this);
                 }
             } else if (click.get_current_button() == Gdk.BUTTON_SECONDARY) {
                 menu.set_pointing_to({ (int) x, (int) y, 1, 1 });
@@ -286,6 +294,8 @@ namespace Flow {
             update_extents();
             queue_resize();
             mark_rubberband = null;
+            rubberband.unparent();
+            rubberband = null;
             queue_allocate();
         }
         
@@ -461,20 +471,6 @@ namespace Flow {
                 cairo.stroke();
                 cairo.restore();
             }
-            
-            // Selection rectangle
-            if (mark_rubberband != null) {
-                cairo.save();
-                cairo.set_source_rgba(0.0, 0.2, 0.9, 0.4);
-                
-                cairo.rectangle(
-                    mark_rubberband.x, mark_rubberband.y,
-                    mark_rubberband.width, mark_rubberband.height
-                );
-                
-                cairo.fill();
-                cairo.restore();
-            }
         }
     }
     
@@ -537,6 +533,20 @@ namespace Flow {
                 
                 node.queue_allocate();
                 node.allocate_size({
+                    layout.x, layout.y,
+                    node_width, node_height
+                }, -1);
+            }
+            
+            if (node_view.rubberband != null) {
+                int node_width, node_height, _;
+                
+                node_view.rubberband.measure(Gtk.Orientation.HORIZONTAL, -1, out node_width, out _, out _, out _);
+                node_view.rubberband.measure(Gtk.Orientation.VERTICAL, -1, out node_height, out _, out _, out _);
+                
+                var layout = (NodeViewLayoutChild) get_layout_child(node_view.rubberband);
+                node_view.rubberband.queue_allocate();
+                node_view.rubberband.allocate_size({
                     layout.x, layout.y,
                     node_width, node_height
                 }, -1);
