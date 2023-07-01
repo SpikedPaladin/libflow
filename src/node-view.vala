@@ -105,11 +105,11 @@ namespace Flow {
             return result;
         }
         
-        private List<unowned NodeRenderer> get_marked_nodes() {
+        private List<unowned NodeRenderer> get_selected_nodes() {
             var result = new List<unowned NodeRenderer>();
             
             foreach (var node in get_nodes()) {
-                if (node.marked)
+                if (node.selected)
                     result.append(node);
             }
             
@@ -138,13 +138,13 @@ namespace Flow {
                 layout.x = new_x;
                 layout.y = new_y;
                 
-                if (move_node.marked) {
-                    foreach (NodeRenderer node in get_marked_nodes()) {
+                if (move_node.selected) {
+                    foreach (NodeRenderer node in get_selected_nodes()) {
                         if (node == move_node) continue;
                         
-                        var marked_layout = (NodeViewLayoutChild) layout_manager.get_layout_child(node);
-                        marked_layout.x -= old_x - layout.x;
-                        marked_layout.y -= old_y - layout.y;
+                        layout = (NodeViewLayoutChild) layout_manager.get_layout_child(node);
+                        layout.x -= old_x - layout.x;
+                        layout.y -= old_y - layout.y;
                     }
                 }
                 
@@ -198,7 +198,7 @@ namespace Flow {
                     
                     node.get_allocation(out node_alloc);
                     node_alloc.intersect(absolute_marked, out result);
-                    node.marked = result == node_alloc;
+                    node.selected = result == node_alloc;
                 }
                 
                 var layout = (NodeViewLayoutChild) layout_manager.get_layout_child(rubberband);

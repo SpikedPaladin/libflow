@@ -378,7 +378,7 @@ namespace Flow {
         /**
          * Expresses wheter this node is marked via rubberband selection
          */
-        public bool marked { get; set; }
+        public virtual bool selected { get; set; }
         /**
          * Determines wheter the user be allowed to remove the node. Otherwise
          * the node can only be removed programmatically
