@@ -92,6 +92,10 @@ namespace Flow {
             base.dispose();
         }
         
+        private NodeViewLayoutChild get_layout(Gtk.Widget widget) {
+            return (NodeViewLayoutChild) layout_manager.get_layout_child(widget);
+        }
+        
         public List<unowned NodeRenderer> get_nodes() {
             var result = new List<unowned NodeRenderer>();
             
@@ -117,7 +121,7 @@ namespace Flow {
         }
         
         public void move(NodeRenderer node, int x, int y) {
-            var layout = (NodeViewLayoutChild) layout_manager.get_layout_child(node);
+            var layout = get_layout(node);
             
             layout.x = x;
             layout.y = y;
@@ -125,7 +129,7 @@ namespace Flow {
         
         private void process_motion(double x, double y) {
             if (move_node != null) {
-                var layout = (NodeViewLayoutChild) layout_manager.get_layout_child(move_node);
+                var layout = get_layout(move_node);
                 int old_x = layout.x;
                 int old_y = layout.y;
                 
@@ -142,7 +146,7 @@ namespace Flow {
                     foreach (NodeRenderer node in get_selected_nodes()) {
                         if (node == move_node) continue;
                         
-                        layout = (NodeViewLayoutChild) layout_manager.get_layout_child(node);
+                        layout = get_layout(node);
                         layout.x -= old_x - layout.x;
                         layout.y -= old_y - layout.y;
                     }
@@ -304,7 +308,7 @@ namespace Flow {
             NodeViewLayoutChild layout;
             
             for (var child = get_first_child(); child != null; child = child.get_next_sibling()) {
-                layout = (NodeViewLayoutChild) layout_manager.get_layout_child(child);
+                layout = get_layout(child);
                 
                 min_x = int.min(min_x, layout.x);
                 min_y = int.min(min_y, layout.y);
@@ -314,7 +318,7 @@ namespace Flow {
                 return;
             
             for (var child = get_first_child(); child != null; child = child.get_next_sibling()) {
-                layout = (NodeViewLayoutChild) layout_manager.get_layout_child(child);
+                layout = get_layout(child);
                 
                 if (min_x < 0)
                     layout.x += -min_x;
