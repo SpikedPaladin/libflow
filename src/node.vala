@@ -19,9 +19,9 @@ namespace Flow {
             get { return _selected; }
             set {
                 if (value)
-                    set_state_flags(Gtk.StateFlags.SELECTED, true);
+                    set_state_flags(Gtk.StateFlags.SELECTED, false);
                 else
-                    set_state_flags(Gtk.StateFlags.NORMAL, true);
+                    unset_state_flags(Gtk.StateFlags.SELECTED);
                 _selected = value;
             }
         }
