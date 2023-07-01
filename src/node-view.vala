@@ -33,6 +33,10 @@ namespace Flow {
          */
         private Socket? clicked_socket = null;
         /**
+         * Widget that used to draw selection
+         */
+        public Rubberband? rubberband;
+        /**
          * The node that is being moved right now via mouse drag.
          * The node that receives the button press event registers
          * itself with this property
@@ -40,12 +44,7 @@ namespace Flow {
         internal NodeRenderer? move_node { get; set; default = null; }
         internal NodeRenderer? resize_node { get; set; default = null; }
         
-        /**
-         * A rectangle detailing the extents of a rubber marking
-         */
-        private Gdk.Rectangle? mark_rubberband = null;
         public ConnectionRenderer renderer = new ConnectionRenderer();
-        public Rubberband rubberband;
         
         static construct {
             set_css_name("flownodeview");
@@ -180,46 +179,25 @@ namespace Flow {
                 queue_draw();
             }
             
-            if (mark_rubberband != null) {
-                mark_rubberband.width = (int) (x - mark_rubberband.x);
-                mark_rubberband.height = (int) (y - mark_rubberband.y);
+            if (rubberband != null) {
+                rubberband.process_motion(get_layout(rubberband), (int) x, (int) y);
                 
-                Gtk.Allocation node_alloc;
-                Gdk.Rectangle absolute_marked = mark_rubberband;
-                
-                if (absolute_marked.width < 0) {
-                    absolute_marked.width *= -1;
-                    absolute_marked.x -= absolute_marked.width;
-                }
-                
-                if (absolute_marked.height < 0) {
-                    absolute_marked.height *= -1;
-                    absolute_marked.y -= absolute_marked.height;
-                }
-                
-                foreach (var node in get_nodes()) {    
+                foreach (var node in get_nodes()) {
+                    Gtk.Allocation node_alloc, rubberband_alloc;
                     Gdk.Rectangle result;
                     
                     node.get_allocation(out node_alloc);
-                    node_alloc.intersect(absolute_marked, out result);
+                    rubberband.get_allocation(out rubberband_alloc);
+                    node_alloc.intersect(rubberband_alloc, out result);
                     node.selected = result == node_alloc;
                 }
-                
-                var layout = (NodeViewLayoutChild) layout_manager.get_layout_child(rubberband);
-                layout.x = absolute_marked.x;
-                layout.y = absolute_marked.y;
-                rubberband.set_size_request(absolute_marked.width, absolute_marked.height);
-                queue_draw();
             }
         }
         
         private void start_marking(int n_clicks, double x, double y) {
             if (click.get_current_button() == Gdk.BUTTON_PRIMARY) {
                 if (pick(x, y, Gtk.PickFlags.DEFAULT) == this) {
-                    mark_rubberband = { (int) x, (int) y, 0, 0 };
-                    
-                    // TODO fix blinking in left top corner
-                    rubberband = new Rubberband();
+                    rubberband = new Rubberband((int) x, (int) y);
                     rubberband.set_parent(this);
                 }
             } else if (click.get_current_button() == Gdk.BUTTON_SECONDARY) {
@@ -297,8 +275,7 @@ namespace Flow {
             
             update_extents();
             queue_resize();
-            mark_rubberband = null;
-            rubberband.unparent();
+            rubberband?.unparent();
             rubberband = null;
             queue_allocate();
         }
@@ -478,7 +455,7 @@ namespace Flow {
         }
     }
     
-    private class NodeViewLayoutChild : Gtk.LayoutChild {
+    protected class NodeViewLayoutChild : Gtk.LayoutChild {
         public int x = 0;
         public int y = 0;
         
