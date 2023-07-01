@@ -47,7 +47,7 @@ namespace Flow {
         public ConnectionRenderer renderer = new ConnectionRenderer();
         
         static construct {
-            set_css_name("flownodeview");
+            set_css_name("node-view");
         }
         
         /**

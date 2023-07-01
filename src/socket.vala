@@ -45,7 +45,7 @@ namespace Flow {
         public GLib.Type value_type { get; construct set; }
         
         static construct {
-            set_css_name("flowsocket");
+            set_css_name("socket");
         }
         
         construct {

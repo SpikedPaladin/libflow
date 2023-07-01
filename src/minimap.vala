@@ -65,7 +65,7 @@ namespace Flow {
         private Gtk.GestureClick ctr_click;
         
         static construct {
-            set_css_name("flowminimap");
+            set_css_name("minimap");
         }
         
         /**

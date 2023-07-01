@@ -53,7 +53,7 @@ namespace Flow {
         }
         
         static construct {
-            set_css_name("flownode");
+            set_css_name("node");
         }
         
         public Node() {
