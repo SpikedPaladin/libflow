@@ -1,6 +1,11 @@
 namespace Flow {
     
     public class NodeView : Gtk.Widget {
+        private Gtk.EventControllerMotion motion;
+        private Gtk.GestureClick click;
+        
+        private Gtk.Popover menu;
+        private Gtk.Widget _menu_content;
         /**
          * If this property is set to true, the nodeview will not perform
          * any check wheter newly created connections will result in cycles
@@ -10,14 +15,6 @@ namespace Flow {
          */
         public bool allow_recursion { get; set; default = false; }
         
-        /**
-         * The eventcontrollers to receive events
-         */
-        private Gtk.EventControllerMotion motion;
-        private Gtk.GestureClick click;
-        
-        private Gtk.Popover menu;
-        private Gtk.Widget _menu_content;
         public Gtk.Widget menu_content { get { return _menu_content; } set { _menu_content = value; menu.set_child(value); } }
         /**
          * The current extents of the temporary connector
@@ -328,15 +325,7 @@ namespace Flow {
          */
         public void remove(NodeRenderer node) {
             node.unlink_all();
-            var child = get_first_child();
-            while (child != null) {
-                if (child == node) {
-                    child.unparent();
-                    return;
-                }
-                child = child.get_next_sibling();
-            }
-            warning("Tried to remove a node that is not a child of nodeview");
+            node.unparent();
         }
         
         /**
