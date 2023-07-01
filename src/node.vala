@@ -8,12 +8,23 @@ namespace Flow {
         
         private Gtk.Widget _title_widget;
         private Gtk.Widget _content;
+        private bool _selected;
         
         private Gtk.Box main_box;
         private Gtk.Box title_box;
         private Gtk.Box socket_box;
         private Gtk.Box sink_box;
         private Gtk.Box source_box;
+        public override bool selected {
+            get { return _selected; }
+            set {
+                if (value)
+                    set_state_flags(Gtk.StateFlags.SELECTED, true);
+                else
+                    set_state_flags(Gtk.StateFlags.NORMAL, true);
+                _selected = value;
+            }
+        }
         public Gtk.Widget title_widget {
             get { return _title_widget; }
             set {
