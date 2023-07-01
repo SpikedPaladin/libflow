@@ -45,7 +45,7 @@ namespace Flow {
          */
         private Gdk.Rectangle? mark_rubberband = null;
         public ConnectionRenderer renderer = new ConnectionRenderer();
-        public Gizmo rubberband;
+        public Rubberband rubberband;
         
         static construct {
             set_css_name("flownodeview");
@@ -215,7 +215,7 @@ namespace Flow {
                     mark_rubberband = { (int) x, (int) y, 0, 0 };
                     
                     // TODO fix blinking in left top corner
-                    rubberband = new Gizmo();
+                    rubberband = new Rubberband();
                     rubberband.set_parent(this);
                 }
             } else if (click.get_current_button() == Gdk.BUTTON_SECONDARY) {
