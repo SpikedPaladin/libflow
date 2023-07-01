@@ -189,7 +189,7 @@ namespace Flow {
                     node.get_allocation(out node_alloc);
                     rubberband.get_allocation(out rubberband_alloc);
                     node_alloc.intersect(rubberband_alloc, out result);
-                    node.selected = result == node_alloc;
+                    node.selected = result.width > 0 && result.height > 0;
                 }
             }
         }
