@@ -23,6 +23,8 @@ namespace Flow {
                 cairo.rel_curve_to(rect.width / 3, 0, 2 * rect.width / 3, rect.height, rect.width, rect.height);
             else
                 cairo.rel_curve_to(-rect.width / 3, 0, 1.3 * rect.width, rect.height, rect.width, rect.height);
+            
+            cairo.stroke();
         }
     }
 }

@@ -424,7 +424,6 @@ namespace Flow {
                             }
                         );
                         
-                        cairo.stroke();
                         cairo.restore();
                     }
                 }
