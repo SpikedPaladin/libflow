@@ -142,9 +142,9 @@ namespace Flow {
                     foreach (NodeRenderer node in get_selected_nodes()) {
                         if (node == move_node) continue;
                         
-                        layout = get_layout(node);
-                        layout.x -= old_x - layout.x;
-                        layout.y -= old_y - layout.y;
+                        var selected_layout = get_layout(node);
+                        selected_layout.x -= old_x - layout.x;
+                        selected_layout.y -= old_y - layout.y;
                     }
                 }
                 
