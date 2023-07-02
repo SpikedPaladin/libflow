@@ -135,6 +135,9 @@ namespace Flow {
                 if (old_x == new_x && old_y == new_y)
                     return;
                 
+                if (new_x < 0) new_x = 0;
+                if (new_y < 0) new_y = 0;
+                
                 layout.x = new_x;
                 layout.y = new_y;
                 
