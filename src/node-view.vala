@@ -460,25 +460,27 @@ namespace Flow {
         }
         
         protected override void measure(Gtk.Widget widget, Gtk.Orientation orientation, int for_size, out int min, out int pref, out int min_base, out int pref_base) {
+            var node_view = widget as NodeView;
+            
             int lower_bound = 0;
             int upper_bound = 0;
             
-            for (var child = widget.get_first_child(); child != null; child = child.get_next_sibling()) {
-                var layout = (NodeViewLayoutChild) get_layout_child(child);
+            foreach (var node in node_view.get_nodes()) {
+                var layout = (NodeViewLayoutChild) get_layout_child(node);
                 
                 switch (orientation) {
                     case Gtk.Orientation.HORIZONTAL:
                         if (layout.x < 0)
                             lower_bound = int.min(layout.x, lower_bound);
                         else
-                            upper_bound = int.max(layout.x + child.get_width(), upper_bound);
+                            upper_bound = int.max(layout.x + node.get_width(), upper_bound);
                         
                         break;
                     case Gtk.Orientation.VERTICAL:
                         if (layout.y < 0)
                             lower_bound = int.min(layout.y, lower_bound);
                         else
-                            upper_bound = int.max(layout.y + child.get_height(), upper_bound);
+                            upper_bound = int.max(layout.y + node.get_height(), upper_bound);
                         
                         break;
                 }
