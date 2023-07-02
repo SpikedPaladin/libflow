@@ -13,22 +13,9 @@ namespace Flow {
             cairo.restore();
             
             if (socket.is_linked()) {
-                Gdk.RGBA color = { 0, 0, 0, 1 };
-                
-                if (socket is Source) {
-                    color = socket.color;
-                } else if (socket is Sink && socket.is_linked()) {
-                    var sink = (Sink) socket;
-                    var source = sink.sources.nth_data(0);
-                    
-                    if (source != null) {
-                        color = source.color;
-                    }
-                }
-                
                 cairo.save();
                 
-                render_linked(cairo, socket, color);
+                render_linked(cairo, socket, socket.color);
                 
                 cairo.restore();
             }
