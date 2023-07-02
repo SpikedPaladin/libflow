@@ -491,34 +491,21 @@ namespace Flow {
         }
         
         protected override void allocate(Gtk.Widget widget, int height, int width, int baseline) {
-            var node_view = widget as NodeView;
-            
-            foreach (var node in node_view.get_nodes()) {
-                int node_width, node_height, _;
+            for (var child = widget.get_first_child(); child != null; child = child.get_next_sibling()) {
+                if (child is Gtk.Native)
+                    continue;
                 
-                node.measure(Gtk.Orientation.HORIZONTAL, -1, out node_width, out _, out _, out _);
-                node.measure(Gtk.Orientation.VERTICAL, -1, out node_height, out _, out _, out _);
+                int child_width, child_height, _;
                 
-                var layout = (NodeViewLayoutChild) get_layout_child(node);
+                child.measure(Gtk.Orientation.HORIZONTAL, -1, out child_width, out _, out _, out _);
+                child.measure(Gtk.Orientation.VERTICAL, -1, out child_height, out _, out _, out _);
                 
-                node.queue_allocate();
-                node.allocate_size({
+                var layout = (NodeViewLayoutChild) get_layout_child(child);
+                
+                child.queue_allocate();
+                child.allocate_size({
                     layout.x, layout.y,
-                    node_width, node_height
-                }, -1);
-            }
-            
-            if (node_view.rubberband != null) {
-                int node_width, node_height, _;
-                
-                node_view.rubberband.measure(Gtk.Orientation.HORIZONTAL, -1, out node_width, out _, out _, out _);
-                node_view.rubberband.measure(Gtk.Orientation.VERTICAL, -1, out node_height, out _, out _, out _);
-                
-                var layout = (NodeViewLayoutChild) get_layout_child(node_view.rubberband);
-                node_view.rubberband.queue_allocate();
-                node_view.rubberband.allocate_size({
-                    layout.x, layout.y,
-                    node_width, node_height
+                    child_width, child_height
                 }, -1);
             }
         }
