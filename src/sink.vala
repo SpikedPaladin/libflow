@@ -15,6 +15,10 @@ namespace Flow {
          */
         public uint max_sources { get; set; default = 1; }
         
+        construct {
+            add_css_class("sink");
+        }
+        
         /**
          * Creates a new Sink with type of given value {@link GLib.Value}
          */

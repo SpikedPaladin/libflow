@@ -8,6 +8,10 @@ namespace Flow {
          */
         public List<Sink> sinks { get { return _sinks; } }
         
+        construct {
+            add_css_class("source");
+        }
+        
         /**
          * Creates a new Source. Supply an arbitrary {@link GLib.Value}.
          * This initial value's type will determine this Source's type.
