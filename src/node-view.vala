@@ -440,7 +440,6 @@ namespace Flow {
                     temp_connector
                 );
                 
-                cairo.stroke();
                 cairo.restore();
             }
         }
