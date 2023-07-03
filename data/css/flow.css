@@ -12,6 +12,10 @@ node:selected {
     background-color: alpha(@accent_color, 0.2);
 }
 
+node > box {
+    margin: 10px;
+}
+
 rubberband {
     border-radius: 8px;
 }

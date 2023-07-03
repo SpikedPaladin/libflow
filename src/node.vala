@@ -59,12 +59,7 @@ namespace Flow {
         public Node() {
             set_layout_manager(new Gtk.BinLayout());
             
-            main_box = new Gtk.Box(Gtk.Orientation.VERTICAL, 0) {
-                margin_top = 10,
-                margin_end = 10,
-                margin_start = 10,
-                margin_bottom = 10
-            };
+            main_box = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
             
             title_box = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
             
