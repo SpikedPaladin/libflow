@@ -7,6 +7,7 @@ project(
 )
 
 pkg = import('pkgconfig')
+gnome = import('gnome')
 
 api_version = '1.0'
 lib_name = meson.project_name() + '-' + api_version
