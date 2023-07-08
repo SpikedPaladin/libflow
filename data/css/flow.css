@@ -16,6 +16,16 @@ node > #node-container {
     margin: 10px;
 }
 
+node #socket-container {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-spacing: 5px;
+}
+
+node #sink-container, #source-container {
+    border-spacing: 5px;
+}
+
 rubberband {
     border-radius: 8px;
 }
