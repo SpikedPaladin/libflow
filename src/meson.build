@@ -28,6 +28,7 @@ lib = library(
     lib_resources,
     lib_sources,
     dependencies: lib_deps,
+    vala_args: [ '--gresourcesdir=data/' ],
     install: true,
     install_dir: [true, true, true]
 )

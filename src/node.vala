@@ -1,5 +1,6 @@
 namespace Flow {
     
+    [GtkTemplate (ui = "/me/paladin/libflow/ui/node.ui")]
     public class Node : NodeRenderer {
         private Gtk.Popover menu;
         private Gtk.GestureClick click;
@@ -10,11 +11,14 @@ namespace Flow {
         private Gtk.Widget _content;
         private bool _selected;
         
-        private Gtk.Box main_box;
-        private Gtk.Box title_box;
-        private Gtk.Box socket_box;
-        private Gtk.Box sink_box;
-        private Gtk.Box source_box;
+        [GtkChild]
+        private unowned Gtk.Box main_box;
+        [GtkChild]
+        private unowned Gtk.Box title_box;
+        [GtkChild]
+        private unowned Gtk.Box sink_box;
+        [GtkChild]
+        private unowned Gtk.Box source_box;
         public override bool selected {
             get { return _selected; }
             set {
@@ -58,31 +62,6 @@ namespace Flow {
         
         public Node() {
             set_layout_manager(new Gtk.BinLayout());
-            
-            main_box = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
-            
-            title_box = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
-            
-            sink_box = new Gtk.Box(Gtk.Orientation.VERTICAL, 0) {
-                spacing = 5,
-                hexpand = true
-            };
-            
-            source_box = new Gtk.Box(Gtk.Orientation.VERTICAL, 0) {
-                spacing = 5
-            };
-            
-            socket_box = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0) {
-                spacing = 5,
-                margin_top = 5,
-                margin_bottom = 5
-            };
-            socket_box.append(sink_box);
-            socket_box.append(source_box);
-            
-            main_box.append(title_box);
-            main_box.append(socket_box);
-            main_box.set_parent(this);
             
             
             click = new Gtk.GestureClick();

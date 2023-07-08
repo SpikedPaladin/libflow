@@ -1,0 +1,30 @@
+using Gtk 4.0;
+
+template $FlowNode : $FlowNodeRenderer {
+    
+    Gtk.Box main_box {
+        orientation: vertical;
+        
+        Gtk.Box title_box {
+            orientation: vertical;
+        }
+        
+        Gtk.Box socket_box {
+            orientation: horizontal;
+            margin-top: 5;
+            margin-bottom: 5;
+            spacing: 5;
+            
+            Gtk.Box sink_box {
+                orientation: vertical;
+                spacing: 5;
+                hexpand: true;
+            }
+            
+            Gtk.Box source_box {
+                orientation: vertical;
+                spacing: 5;
+            }
+        }
+    }
+}
