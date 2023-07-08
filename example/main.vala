@@ -8,7 +8,7 @@ public class NumberGeneratorNode : Flow.Node {
         
         number_source = new Flow.Source.with_type(Type.DOUBLE);
         number_source.set_value(0d);
-        number_source.color = { 1, 0, 0, 1 };
+        number_source.color = { 1, 1, 0, 1 };
         number_source.name = "output";
         add_source(number_source);
         
@@ -38,12 +38,12 @@ public class OperationNode : Flow.Node {
         highlight_color = { 0.6f, 0, 1, 0.3f };
         
         result = new Flow.Source(Type.DOUBLE);
-        result.color = { 0, 1, 1, 1 };
+        result.color = { 1, 0, 1, 1 };
         result.name = "result";
         add_source(result);
         
         summand_a = new Flow.Sink.with_type(Type.DOUBLE);
-        summand_a.color = { 1, 0, 0, 1 };
+        summand_a.color = { 0, 1, 1, 1 };
         summand_a.name = "operand A";
         summand_a.changed.connect(@value => {
             if (@value == null) {
@@ -55,7 +55,7 @@ public class OperationNode : Flow.Node {
         add_sink(summand_a);
         
         summand_b = new Flow.Sink.with_type(Type.DOUBLE);
-        summand_b.color = { 1, 0, 0, 1 };
+        summand_b.color = { 0, 1, 0, 1 };
         summand_b.name = "operand B";
         summand_b.changed.connect(@value => {
             if (@value == null) {
