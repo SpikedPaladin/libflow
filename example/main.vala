@@ -116,7 +116,16 @@ public class PrintNode : Flow.Node {
         if (@value == null) {
             return;
         }
-        label.set_text(@value.strdup_contents());
+        
+        var text = @value.strdup_contents();
+        var dot_index = text.index_of_char('.', 0);
+        
+        if (text.get_char(dot_index + 1) == '0')
+            text = text.substring(0, dot_index);
+        else
+            text = text.substring(0, dot_index + 2);
+        
+        label.set_text(text);
     }
 }
 
