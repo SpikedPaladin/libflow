@@ -141,7 +141,7 @@ public class AdvancedCalculatorWindow : Gtk.ApplicationWindow {
     
     private void init_header_bar() {
         var title_widget = new Gtk.Label("");
-        title_widget.set_markup("<b>GtkFlowGraph</b>");
+        title_widget.set_markup("<b>libflow Example</b>");
         
         header_bar = new Gtk.HeaderBar() {
             title_widget = title_widget
