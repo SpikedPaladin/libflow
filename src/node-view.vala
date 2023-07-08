@@ -273,47 +273,10 @@ namespace Flow {
                 temp_connector = null;
             }
             
-            update_extents();
             queue_resize();
             rubberband?.unparent();
             rubberband = null;
             queue_allocate();
-        }
-        
-        private void update_extents() {
-            int min_x = 0, min_y = 0;
-            NodeViewLayoutChild layout;
-            
-            for (var child = get_first_child(); child != null; child = child.get_next_sibling()) {
-                layout = get_layout(child);
-                
-                min_x = int.min(min_x, layout.x);
-                min_y = int.min(min_y, layout.y);
-            }
-            
-            if (min_x >= 0 && min_y >= 0)
-                return;
-            
-            for (var child = get_first_child(); child != null; child = child.get_next_sibling()) {
-                layout = get_layout(child);
-                
-                if (min_x < 0)
-                    layout.x += -min_x;
-                if (min_y < 0)
-                    layout.y += -min_y;
-            }
-            
-            var parent = get_parent();
-            if (parent != null && parent is Gtk.Viewport) {
-                var scrollwidget = parent.get_parent();
-                
-                if (parent != null && parent is Gtk.ScrolledWindow) {
-                    var sw = (Gtk.ScrolledWindow) scrollwidget;
-                    
-                    sw.hadjustment.value += (double) (-min_x);
-                    sw.vadjustment.value += (double) (-min_y);
-                }
-            }
         }
         
         /**
