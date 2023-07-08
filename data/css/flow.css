@@ -12,7 +12,7 @@ node:selected {
     background-color: alpha(@accent_color, 0.2);
 }
 
-node > box {
+node > #node-container {
     margin: 10px;
 }
 

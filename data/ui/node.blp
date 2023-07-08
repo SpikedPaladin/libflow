@@ -3,25 +3,30 @@ using Gtk 4.0;
 template $FlowNode : $FlowNodeRenderer {
     
     Gtk.Box main_box {
+        name: "node-container";
         orientation: vertical;
         
         Gtk.Box title_box {
+            name: "title-container";
             orientation: vertical;
         }
         
         Gtk.Box socket_box {
+            name: "socket-container";
             orientation: horizontal;
             margin-top: 5;
             margin-bottom: 5;
             spacing: 5;
             
             Gtk.Box sink_box {
+                name: "sink-container";
                 orientation: vertical;
                 spacing: 5;
                 hexpand: true;
             }
             
             Gtk.Box source_box {
+                name: "source-container";
                 orientation: vertical;
                 spacing: 5;
             }
