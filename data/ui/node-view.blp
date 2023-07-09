@@ -1,0 +1,14 @@
+using Gtk 4.0;
+
+template $FlowNodeView : Widget {
+    
+    EventControllerMotion motion {
+        motion => $process_motion();
+    }
+    
+    GestureClick click {
+        button: 0;
+        pressed => $start_marking();
+        released => $end_temp_connector();
+    }
+}

@@ -1,12 +1,13 @@
 namespace Flow {
     
+    [GtkTemplate (ui = "/me/paladin/libflow/ui/node-view.ui")]
     public class NodeView : Gtk.Widget {
-        private Gtk.EventControllerMotion motion;
-        private Gtk.GestureClick click;
-        
         private Gtk.Popover menu;
         private Gtk.Widget _menu_content;
         private int _grid_size = 1;
+        
+        [GtkChild]
+        private unowned Gtk.GestureClick click;
         /**
          * If this property is set to true, the nodeview will not perform
          * any check wheter newly created connections will result in cycles
@@ -57,16 +58,6 @@ namespace Flow {
             
             set_layout_manager(new NodeViewLayoutManager());
             set_size_request(100, 100);
-            
-            motion = new Gtk.EventControllerMotion();
-            add_controller(motion);
-            motion.motion.connect(process_motion);
-            
-            click = new Gtk.GestureClick();
-            add_controller(click);
-            click.set_button(0);
-            click.pressed.connect(start_marking);
-            click.released.connect(end_temp_connector);
             
             menu = new Gtk.Popover();
             menu.set_parent(this);
@@ -127,6 +118,7 @@ namespace Flow {
             return (int) (multiply * Math.round(number / multiply));
         }
         
+        [GtkCallback]
         private void process_motion(double x, double y) {
             if (move_node != null) {
                 var layout = get_layout(move_node);
@@ -198,6 +190,7 @@ namespace Flow {
             }
         }
         
+        [GtkCallback]
         private void start_marking(int n_clicks, double x, double y) {
             if (click.get_current_button() == Gdk.BUTTON_PRIMARY) {
                 if (pick(x, y, Gtk.PickFlags.DEFAULT) == this) {
@@ -226,6 +219,7 @@ namespace Flow {
             temp_connector = { (int) point.x, (int) point.y, 0, 0 };
         }
         
+        [GtkCallback]
         internal void end_temp_connector(int n_clicks, double x, double y) {
             if (click.get_current_button() != Gdk.BUTTON_PRIMARY) return;
             

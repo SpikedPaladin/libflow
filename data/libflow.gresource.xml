@@ -3,5 +3,6 @@
     <gresource prefix="/me/paladin/libflow">
         <file compressed="true">css/flow.css</file>
         <file preprocess="xml-stripblanks">ui/node.ui</file>
+        <file preprocess="xml-stripblanks">ui/node-view.ui</file>
     </gresource>
 </gresources>

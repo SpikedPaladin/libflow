@@ -1,5 +1,6 @@
 blueprints = files(
     'ui/node.blp',
+    'ui/node-view.blp',
 )
 
 blp_target = custom_target(
