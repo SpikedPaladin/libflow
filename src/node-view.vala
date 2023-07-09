@@ -50,15 +50,16 @@ namespace Flow {
             set_css_name("node-view");
         }
         
+        construct {
+            new CssLoader().ensure();
+            
+            set_layout_manager(new NodeViewLayoutManager());
+        }
+        
         /**
          * Instantiate a new NodeView
          */
         public NodeView() {
-            new CssLoader().ensure();
-            
-            set_layout_manager(new NodeViewLayoutManager());
-            set_size_request(100, 100);
-            
             menu = new Gtk.Popover();
             menu.set_parent(this);
             menu.set_has_arrow(false);
