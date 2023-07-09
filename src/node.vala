@@ -3,13 +3,14 @@ namespace Flow {
     [GtkTemplate (ui = "/me/paladin/libflow/ui/node.ui")]
     public class Node : NodeRenderer {
         private Gtk.Popover menu;
-        private Gtk.GestureClick click;
         private List<Source> sources = new List<Source>();
         private List<Sink> sinks = new List<Sink>();
         
         private Gtk.Widget _title_widget;
         private Gtk.Widget _content;
         private bool _selected;
+        [GtkChild]
+        private unowned Gtk.GestureClick click;
         
         [GtkChild]
         private unowned Gtk.Box main_box;
@@ -62,13 +63,6 @@ namespace Flow {
         
         public Node() {
             set_layout_manager(new Gtk.BinLayout());
-            
-            
-            click = new Gtk.GestureClick();
-            add_controller(click);
-            click.set_button(0);
-            click.pressed.connect(press_button);
-            click.end.connect(release_button);
             
             menu = new Gtk.Popover();
             menu.set_parent(this);
@@ -127,6 +121,7 @@ namespace Flow {
             source_box.append(box);
         }
         
+        [GtkCallback]
         private void press_button(int n_click, double x, double y) {
             if (click.get_current_button() == Gdk.BUTTON_PRIMARY) {
                 var picked_widget = pick(x,y, Gtk.PickFlags.NON_TARGETABLE);
@@ -162,6 +157,7 @@ namespace Flow {
             }
         }
         
+        [GtkCallback]
         private void release_button() {
             if (click.get_current_button() != Gdk.BUTTON_PRIMARY) return;
             

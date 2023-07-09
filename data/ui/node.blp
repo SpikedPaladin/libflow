@@ -27,4 +27,10 @@ template $FlowNode : $FlowNodeRenderer {
             }
         }
     }
+    
+    GestureClick click {
+        button: 0;
+        pressed => $press_button();
+        released => $release_button();
+    }
 }
