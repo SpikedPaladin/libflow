@@ -61,10 +61,16 @@ namespace Flow {
         static construct {
             set_css_name("node");
             
-            install_action("node.delete", null, (widget) => {
+            install_action("node.delete", null, widget => {
                 var node = widget as Node;
                 
                 node.@delete();
+            });
+            
+            install_action("node.unlink-all", null, widget => {
+                var node = widget as Node;
+                
+                node.unlink_all();
             });
         }
         

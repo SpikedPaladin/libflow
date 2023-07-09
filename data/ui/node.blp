@@ -28,7 +28,6 @@ template $FlowNode : $FlowNodeRenderer {
         }
     }
     
-    
     PopoverMenu menu {
         has-arrow: false;
         menu-model: delete_menu;
@@ -45,5 +44,10 @@ menu delete_menu {
     item {
         label: _("Delete");
         action: "node.delete";
+    }
+    
+    item {
+        label: _("Unlink all");
+        action: "node.unlink-all";
     }
 }
