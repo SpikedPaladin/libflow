@@ -2,7 +2,6 @@ namespace Flow {
     
     [GtkTemplate (ui = "/me/paladin/libflow/ui/node.ui")]
     public class Node : NodeRenderer {
-        private Gtk.Popover menu;
         private List<Source> sources = new List<Source>();
         private List<Sink> sinks = new List<Sink>();
         
@@ -11,6 +10,8 @@ namespace Flow {
         private bool _selected;
         [GtkChild]
         private unowned Gtk.GestureClick click;
+        [GtkChild]
+        private unowned Gtk.PopoverMenu menu;
         
         [GtkChild]
         private unowned Gtk.Box main_box;
@@ -59,23 +60,16 @@ namespace Flow {
         
         static construct {
             set_css_name("node");
+            
+            install_action("node.delete", null, (widget) => {
+                var node = widget as Node;
+                
+                node.@delete();
+            });
         }
         
         public Node() {
             set_layout_manager(new Gtk.BinLayout());
-            
-            menu = new Gtk.Popover();
-            menu.set_parent(this);
-            menu.set_has_arrow(false);
-            
-            var box = new Gtk.Box(Gtk.Orientation.VERTICAL, 10);
-            
-            var delete_button = new Gtk.Button.with_label("Delete");
-            delete_button.clicked.connect(cb_delete);
-            delete_button.set_has_frame(false);
-            box.append(delete_button);
-            
-            menu.set_child(box);
         }
         
         public void set_label_name(string name, bool bold = true) {
@@ -87,8 +81,9 @@ namespace Flow {
             title_widget = label;
         }
         
-        private void cb_delete() {
+        public virtual void @delete() {
             var node_view = get_parent() as NodeView;
+            
             node_view.remove(this);
         }
         

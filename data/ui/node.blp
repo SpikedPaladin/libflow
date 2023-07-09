@@ -28,9 +28,22 @@ template $FlowNode : $FlowNodeRenderer {
         }
     }
     
+    
+    PopoverMenu menu {
+        has-arrow: false;
+        menu-model: delete_menu;
+    }
+    
     GestureClick click {
         button: 0;
         pressed => $press_button();
         released => $release_button();
+    }
+}
+
+menu delete_menu {
+    item {
+        label: _("Delete");
+        action: "node.delete";
     }
 }
