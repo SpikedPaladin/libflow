@@ -68,7 +68,7 @@ namespace Flow {
             });
         }
         
-        public Node() {
+        construct {
             set_layout_manager(new Gtk.BinLayout());
         }
         
