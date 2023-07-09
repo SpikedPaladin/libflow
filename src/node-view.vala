@@ -6,6 +6,7 @@ namespace Flow {
         
         private Gtk.Popover menu;
         private Gtk.Widget _menu_content;
+        private int _grid_size = 1;
         /**
          * If this property is set to true, the nodeview will not perform
          * any check wheter newly created connections will result in cycles
@@ -16,6 +17,7 @@ namespace Flow {
         public bool allow_recursion { get; set; default = false; }
         
         public Gtk.Widget menu_content { get { return _menu_content; } set { _menu_content = value; menu.set_child(value); } }
+        public int grid_size { get { return _grid_size; } set { if (value < 1) _grid_size = 1; else _grid_size = value; } }
         /**
          * The current extents of the temporary connector
          * if null, there is no temporary connector drawn at the moment
@@ -121,6 +123,10 @@ namespace Flow {
             layout.y = y;
         }
         
+        private int round_to_multiply(int number, int multiply) {
+            return (int) (multiply * Math.round(number / multiply));
+        }
+        
         private void process_motion(double x, double y) {
             if (move_node != null) {
                 var layout = get_layout(move_node);
@@ -136,8 +142,8 @@ namespace Flow {
                 if (new_x < 0) new_x = 0;
                 if (new_y < 0) new_y = 0;
                 
-                layout.x = new_x;
-                layout.y = new_y;
+                layout.x = _grid_size == 1 ? new_x : round_to_multiply(new_x, _grid_size);
+                layout.y = _grid_size == 1 ? new_y : round_to_multiply(new_y, _grid_size);
                 
                 if (move_node.selected) {
                     foreach (NodeRenderer node in get_selected_nodes()) {
