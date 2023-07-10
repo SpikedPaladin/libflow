@@ -5,9 +5,6 @@ namespace Flow {
         private Gtk.Popover menu;
         private Gtk.Widget _menu_content;
         private int _grid_size = 1;
-        
-        [GtkChild]
-        private unowned Gtk.GestureClick click;
         /**
          * If this property is set to true, the nodeview will not perform
          * any check wheter newly created connections will result in cycles
@@ -193,15 +190,16 @@ namespace Flow {
         
         [GtkCallback]
         private void start_marking(int n_clicks, double x, double y) {
-            if (click.get_current_button() == Gdk.BUTTON_PRIMARY) {
-                if (pick(x, y, Gtk.PickFlags.DEFAULT) == this) {
-                    rubberband = new Rubberband((int) x, (int) y);
-                    rubberband.set_parent(this);
-                }
-            } else if (click.get_current_button() == Gdk.BUTTON_SECONDARY) {
-                menu.set_pointing_to({ (int) x, (int) y, 1, 1 });
-                menu.popup();
+            if (pick(x, y, Gtk.PickFlags.DEFAULT) == this) {
+                rubberband = new Rubberband((int) x, (int) y);
+                rubberband.set_parent(this);
             }
+        }
+        
+        [GtkCallback]
+        private void open_menu(int n_clicks, double x, double y) {
+            menu.set_pointing_to({ (int) x, (int) y, 1, 1 });
+            menu.popup();
         }
         
         internal void start_temp_connector(Socket socket) {
@@ -222,8 +220,6 @@ namespace Flow {
         
         [GtkCallback]
         internal void end_temp_connector(int n_clicks, double x, double y) {
-            if (click.get_current_button() != Gdk.BUTTON_PRIMARY) return;
-            
             if (temp_connector != null) {
                 var widget = pick(x, y, Gtk.PickFlags.DEFAULT);
                 

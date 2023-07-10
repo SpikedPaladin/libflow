@@ -6,9 +6,14 @@ template $FlowNodeView : Widget {
         motion => $process_motion();
     }
     
-    GestureClick click {
-        button: 0;
+    GestureClick primary_click {
+        button: 1;
         pressed => $start_marking();
         released => $end_temp_connector();
+    }
+    
+    GestureClick secondary_click {
+        button: 3;
+        pressed => $open_menu();
     }
 }
