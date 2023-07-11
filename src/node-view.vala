@@ -189,7 +189,7 @@ namespace Flow {
         }
         
         [GtkCallback]
-        private void start_marking(int n_clicks, double x, double y) {
+        private void start_selection(int n_clicks, double x, double y) {
             if (pick(x, y, Gtk.PickFlags.DEFAULT) == this) {
                 rubberband = new Rubberband((int) x, (int) y);
                 rubberband.set_parent(this);

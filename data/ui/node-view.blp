@@ -8,7 +8,7 @@ template $FlowNodeView : Widget {
     
     GestureClick primary_click {
         button: 1;
-        pressed => $start_marking();
+        pressed => $start_selection();
         released => $end_temp_connector();
     }
     
