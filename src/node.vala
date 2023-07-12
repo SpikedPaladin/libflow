@@ -9,8 +9,6 @@ namespace Flow {
         private Gtk.Widget _content;
         private bool _selected;
         [GtkChild]
-        private unowned Gtk.GestureClick click;
-        [GtkChild]
         private unowned Gtk.PopoverMenu menu;
         
         [GtkChild]
@@ -124,48 +122,47 @@ namespace Flow {
         
         [GtkCallback]
         private void press_button(int n_click, double x, double y) {
-            if (click.get_current_button() == Gdk.BUTTON_PRIMARY) {
-                var picked_widget = pick(x,y, Gtk.PickFlags.NON_TARGETABLE);
-                
-                Gtk.Widget parent_widget = picked_widget.get_parent();
-                bool do_processing = false;
-                if (picked_widget == this || picked_widget == parent_widget) {
+            var picked_widget = pick(x,y, Gtk.PickFlags.NON_TARGETABLE);
+            
+            Gtk.Widget parent_widget = picked_widget.get_parent();
+            bool do_processing = false;
+            if (picked_widget == this || picked_widget == parent_widget) {
+                do_processing = true;
+            } else if (picked_widget.get_parent() == parent_widget) {
+                if (picked_widget is Gtk.Label || picked_widget is Gtk.Image) {
                     do_processing = true;
-                } else if (picked_widget.get_parent() == parent_widget) {
-                    if (picked_widget is Gtk.Label || picked_widget is Gtk.Image) {
-                        do_processing = true;
-                    }
                 }
-                
-                if (!do_processing) return;
-                
-                Gdk.Rectangle resize_area = { get_width() - 8, get_height() - 8, 8, 8 };
-                var node_view = get_parent() as NodeView;
-                
-                if (resize_area.contains_point((int) x, (int) y)) {
-                    node_view.resize_node = this;
-                    resize_start_width = get_width();
-                    resize_start_height = get_height();
-                } else {
-                    node_view.move_node = this;
-                }
-                
-                click_offset_x = x;
-                click_offset_y = y;
-            } else if (click.get_current_button() == Gdk.BUTTON_SECONDARY) {
-                menu.set_pointing_to({ (int) x, (int) y, 1, 1 });
-                menu.popup();
             }
+            
+            if (!do_processing) return;
+            
+            Gdk.Rectangle resize_area = { get_width() - 8, get_height() - 8, 8, 8 };
+            var node_view = get_parent() as NodeView;
+            
+            if (resize_area.contains_point((int) x, (int) y)) {
+                node_view.resize_node = this;
+                resize_start_width = get_width();
+                resize_start_height = get_height();
+            } else {
+                node_view.move_node = this;
+            }
+            
+            click_offset_x = x;
+            click_offset_y = y;
         }
         
         [GtkCallback]
         private void release_button() {
-            if (click.get_current_button() != Gdk.BUTTON_PRIMARY) return;
-            
             var node_view = get_parent() as NodeView;
             node_view.move_node = null;
             node_view.resize_node = null;
             node_view.queue_allocate();
+        }
+        
+        [GtkCallback]
+        private void open_menu(int n_clicks, double x, double y) {
+            menu.set_pointing_to({ (int) x, (int) y, 1, 1 });
+            menu.popup();
         }
         
         /**

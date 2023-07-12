@@ -33,10 +33,15 @@ template $FlowNode : $FlowNodeRenderer {
         menu-model: delete_menu;
     }
     
-    GestureClick click {
-        button: 0;
+    GestureClick primary_click {
+        button: 1;
         pressed => $press_button();
         released => $release_button();
+    }
+    
+    GestureClick secondary_click {
+        button: 3;
+        pressed => $open_menu();
     }
 }
 
