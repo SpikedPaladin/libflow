@@ -268,6 +268,8 @@ namespace Flow {
                 temp_connector = null;
             }
             
+            move_node = null;
+            resize_node = null;
             queue_resize();
             rubberband?.unparent();
             rubberband = null;
