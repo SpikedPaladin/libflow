@@ -259,10 +259,6 @@ namespace Flow {
                 }
                 
                 queue_draw();
-                temp_connected_socket.queue_draw();
-                if (clicked_socket != null) {
-                    clicked_socket.queue_draw();
-                }
                 clicked_socket = null;
                 temp_connected_socket = null;
                 temp_connector = null;
