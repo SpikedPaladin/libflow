@@ -228,7 +228,7 @@ public class AdvancedCalculatorWindow : Gtk.ApplicationWindow {
 int main(string[] argv) {
     var app = new Gtk.Application(
         "com.example.GtkApplication",
-        GLib.ApplicationFlags.FLAGS_NONE
+        ApplicationFlags.FLAGS_NONE
     );
     
     app.activate.connect(() => new AdvancedCalculatorWindow(app).present());

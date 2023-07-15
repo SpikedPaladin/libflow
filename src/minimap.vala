@@ -32,11 +32,11 @@ namespace Flow {
             }
             set {
                 if (_nodeview != null)
-                    GLib.SignalHandler.disconnect(_nodeview, draw_signal);
+                    SignalHandler.disconnect(_nodeview, draw_signal);
                 
                 if (_scrolledwindow != null) {
-                    GLib.SignalHandler.disconnect(_nodeview, hadjustment_signal);
-                    GLib.SignalHandler.disconnect(_nodeview, vadjustment_signal);
+                    SignalHandler.disconnect(_nodeview, hadjustment_signal);
+                    SignalHandler.disconnect(_nodeview, vadjustment_signal);
                 }
                 if (value == null) {
                     _nodeview = null;

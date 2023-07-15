@@ -42,7 +42,7 @@ namespace Flow {
         /**
          * The type that has been set to this socket
          */
-        public GLib.Type value_type { get; construct set; }
+        public Type value_type { get; construct set; }
         
         static construct {
             set_css_name("socket");
