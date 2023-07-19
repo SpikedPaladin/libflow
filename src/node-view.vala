@@ -349,7 +349,13 @@ namespace Flow {
         internal signal void draw_minimap();
         
         protected override void snapshot(Gtk.Snapshot snapshot) {
-            base.snapshot(snapshot);
+            // Snapshot all childs not including 'Rubberband'
+            for (var child = get_first_child(); child != null; child = child.get_next_sibling()) {
+                if (child is Rubberband)
+                    continue;
+                
+                snapshot_child(child, snapshot);
+            }
             
             var cairo = snapshot.append_cairo(
                 Graphene.Rect().init(0, 0, (float) get_width(), (float) get_height())
@@ -399,6 +405,10 @@ namespace Flow {
                 
                 cairo.restore();
             }
+            
+            // Snapshot rubberband over all widgets & custom drawing
+            if (rubberband != null)
+                snapshot_child(rubberband, snapshot);
         }
     }
     
