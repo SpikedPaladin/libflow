@@ -130,14 +130,6 @@ public class PrintNode : Flow.Node {
 }
 
 public class AdvancedCalculatorWindow : Gtk.ApplicationWindow {
-    
-    construct {
-        set_default_size(600, 550);
-        init_header_bar();
-        init_window_layout();
-        init_actions();
-    }
-    
     private Gtk.HeaderBar header_bar;
     private Gtk.Box menu_content;
     
@@ -146,6 +138,11 @@ public class AdvancedCalculatorWindow : Gtk.ApplicationWindow {
     
     public AdvancedCalculatorWindow(Gtk.Application app) {
         application = app;
+        
+        set_default_size(600, 550);
+        init_header_bar();
+        init_window_layout();
+        init_actions();
     }
     
     private void init_header_bar() {
