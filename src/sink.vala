@@ -23,7 +23,7 @@ namespace Flow {
          * Creates a new Sink with type of given value {@link GLib.Value}
          */
         public Sink(Value @value) {
-            value_type = @value.type();
+            value_type = @value.get_gtype();
         }
         
         /**
