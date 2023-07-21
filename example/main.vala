@@ -1,18 +1,17 @@
 public class NumberGeneratorNode : Flow.Node {
-    private Flow.Source number_source;
-    public Gtk.SpinButton spin_button;
     
     public NumberGeneratorNode() {
         set_label_name("NumberGenerator");
         highlight_color = { 0.6f, 1, 0, 0.3f };
         
-        number_source = new Flow.Source.with_type(Type.DOUBLE);
+        var number_source = new Flow.Source.with_type(Type.DOUBLE) {
+            color = { 1, 1, 0, 1 },
+            name = "output"
+        };
         number_source.set_value(0d);
-        number_source.color = { 1, 1, 0, 1 };
-        number_source.name = "output";
         add_source(number_source);
         
-        spin_button = new Gtk.SpinButton(new Gtk.Adjustment(0, 0, 100, 1, 10, 0), 0, 0);
+        var spin_button = new Gtk.SpinButton(new Gtk.Adjustment(0, 0, 100, 1, 10, 0), 0, 0);
         spin_button.set_size_request(50,20);
         spin_button.value_changed.connect(() => {
             number_source.set_value(spin_button.get_value());
@@ -27,24 +26,21 @@ public class OperationNode : Flow.Node {
     private double operand_b_value = 0;
     private string operation = "+";
     
-    private Flow.Sink summand_a;
-    private Flow.Sink summand_b;
-    
     private Flow.Source result;
-    public Gtk.DropDown drop_down;
     
     public OperationNode() {
         set_label_name("Operation");
         highlight_color = { 0.6f, 0, 1, 0.3f };
         
-        result = new Flow.Source(Type.DOUBLE);
-        result.color = { 1, 0, 1, 1 };
-        result.name = "result";
-        add_source(result);
+        result = new Flow.Source.with_type(Type.DOUBLE) {
+            color = { 1, 0, 1, 1 },
+            name = "result"
+        };
         
-        summand_a = new Flow.Sink.with_type(Type.DOUBLE);
-        summand_a.color = { 0, 1, 1, 1 };
-        summand_a.name = "operand A";
+        var summand_a = new Flow.Sink.with_type(Type.DOUBLE) {
+            color = { 0, 1, 1, 1 },
+            name = "operand A"
+        };
         summand_a.changed.connect(@value => {
             if (@value == null) {
                 return;
@@ -52,22 +48,25 @@ public class OperationNode : Flow.Node {
             operand_a_value = @value.get_double();
             publish_result();
         });
-        add_sink(summand_a);
         
-        summand_b = new Flow.Sink.with_type(Type.DOUBLE);
-        summand_b.color = { 0, 1, 0, 1 };
-        summand_b.name = "operand B";
+        var summand_b = new Flow.Sink.with_type(Type.DOUBLE) {
+            color = { 0, 1, 0, 1 },
+            name = "operand B"
+        };
         summand_b.changed.connect(@value => {
-            if (@value == null) {
+            if (@value == null)
                 return;
-            }
+            
             operand_b_value = @value.get_double();
             publish_result();
         });
+        
+        add_source(result);
+        add_sink(summand_a);
         add_sink(summand_b);
         
-        string[] operations = {"+", "-", "*", "/"};
-        drop_down = new Gtk.DropDown.from_strings(operations);
+        string[] operations = { "+", "-", "*", "/" };
+        var drop_down = new Gtk.DropDown.from_strings(operations);
         drop_down.notify["selected-item"].connect(() => {
             operation = operations[drop_down.get_selected()];
             publish_result();
@@ -94,22 +93,21 @@ public class OperationNode : Flow.Node {
 }
 
 public class PrintNode : Flow.Node {
-    private Flow.Sink number;
     public Gtk.Label label;
     
     public PrintNode() {
         set_label_name("Output");
         highlight_color = { 0.6f , 1, 1, 0.3f };
         
-        number = new Flow.Sink.with_type(Type.DOUBLE);
-        number.color = { 0, 0, 1, 1 };
-        number.name = "input";
+        var number = new Flow.Sink.with_type(Type.DOUBLE) {
+            color = { 0, 0, 1, 1 },
+            name = "input"
+        };
         number.changed.connect(display_value);
+        
         add_sink(number);
         
-        label = new Gtk.Label("");
-        
-        content = label;
+        content = label = new Gtk.Label("");
     }
     
     private void display_value(Value? @value) {
@@ -130,11 +128,8 @@ public class PrintNode : Flow.Node {
 }
 
 public class AdvancedCalculatorWindow : Gtk.ApplicationWindow {
-    private Gtk.HeaderBar header_bar;
-    private Gtk.Box menu_content;
-    
     private Flow.NodeView node_view;
-    private Flow.Minimap minimap;
+    private Gtk.Box menu_content;
     
     public AdvancedCalculatorWindow(Gtk.Application app) {
         application = app;
@@ -146,34 +141,28 @@ public class AdvancedCalculatorWindow : Gtk.ApplicationWindow {
     }
     
     private void init_header_bar() {
-        var title_widget = new Gtk.Label("");
-        title_widget.set_markup("<b>libflow Example</b>");
-        
-        header_bar = new Gtk.HeaderBar() {
-            title_widget = title_widget
-        };
-        
-        set_titlebar(header_bar);
+        set_titlebar(new Gtk.HeaderBar() {
+            title_widget = new Gtk.Label("<b>libflow Example</b>") {
+                use_markup = true
+            }
+        });
     }
     
     private void init_window_layout() {
-        var scrolled_window = new Gtk.ScrolledWindow();
-        var overlay = new Gtk.Overlay();
+        Gtk.Overlay overlay;
         
-        node_view = new Flow.NodeView();
+        set_child(overlay = new Gtk.Overlay() {
+            child = new Gtk.ScrolledWindow() {
+                child = this.node_view = new Flow.NodeView()
+            }
+        });
         
-        minimap = new Flow.Minimap() {
+        overlay.add_overlay(new Flow.Minimap() {
             halign = Gtk.Align.END,
             valign = Gtk.Align.END,
             nodeview = node_view,
             can_target = false
-        };
-        
-        scrolled_window.set_child(node_view);
-        overlay.set_child(scrolled_window);
-        overlay.add_overlay(minimap);
-        
-        set_child(overlay);
+        });
     }
     
     private void init_actions() {
