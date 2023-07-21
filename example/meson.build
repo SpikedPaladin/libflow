@@ -12,6 +12,5 @@ executable(
     
     example_sources,
     vala_args: '--target-glib=2.58',
-    dependencies: example_deps,
-    install: true
+    dependencies: example_deps
 )
