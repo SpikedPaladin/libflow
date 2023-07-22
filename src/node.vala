@@ -26,6 +26,7 @@ namespace Flow {
                     set_state_flags(Gtk.StateFlags.SELECTED, false);
                 else
                     unset_state_flags(Gtk.StateFlags.SELECTED);
+                
                 _selected = value;
             }
         }
@@ -128,10 +129,8 @@ namespace Flow {
             bool do_processing = false;
             if (picked_widget == this || picked_widget == parent_widget) {
                 do_processing = true;
-            } else if (picked_widget.get_parent() == parent_widget) {
-                if (picked_widget is Gtk.Label || picked_widget is Gtk.Image) {
-                    do_processing = true;
-                }
+            } else if (picked_widget is Gtk.Label || picked_widget is Gtk.Image) {
+                do_processing = true;
             }
             
             if (!do_processing) return;
