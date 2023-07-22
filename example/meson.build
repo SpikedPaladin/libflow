@@ -1,16 +1,10 @@
-example_deps = [
-    dependency('gtk4'),
-    lib_dependency
-]
-
-example_sources = [
-    'main.vala',
-]
-
 executable(
     'libflow-sample',
     
-    example_sources,
+    files('main.vala'),
     vala_args: '--target-glib=2.58',
-    dependencies: example_deps
+    dependencies: [
+        dependency('gtk4'),
+        lib_dependency
+    ]
 )
