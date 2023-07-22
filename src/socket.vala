@@ -11,10 +11,6 @@ namespace Flow {
         public string? description { get; set; }
         /**
          * Color of this socket
-         *
-         * Be aware that only {@link Source}s dictate the colors of the
-         * connections in default {@link ConnectionRenderer}. If this Socket holds a {@link Sink} it
-         * will have no visible effect.
          */
         public Gdk.RGBA color { get; set; default = { 0, 0, 0, 1 }; }
         /**
