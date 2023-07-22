@@ -9,6 +9,9 @@ namespace Flow {
     public class Minimap : Gtk.DrawingArea {
         private NodeView? _nodeview = null;
         private Gtk.ScrolledWindow? _scrolledwindow = null;
+        private Gtk.EventControllerMotion ctr_motion;
+        private Gtk.GestureClick ctr_click;
+        
         private ulong draw_signal = 0;
         private ulong hadjustment_signal = 0;
         private ulong vadjustment_signal = 0;
@@ -61,9 +64,6 @@ namespace Flow {
             }
         }
         
-        private Gtk.EventControllerMotion ctr_motion;
-        private Gtk.GestureClick ctr_click;
-        
         static construct {
             set_css_name("minimap");
         }
@@ -72,14 +72,14 @@ namespace Flow {
          * Create a new Minimap
          */
         public Minimap() {
-            set_size_request(50,50);
+            set_size_request(50, 50);
             
             ctr_motion = new Gtk.EventControllerMotion();
             add_controller(ctr_motion);
             ctr_click = new Gtk.GestureClick();
             add_controller(ctr_click);
             
-            ctr_click.pressed.connect((n, x, y) => { do_button_press_event(x, y); });
+            ctr_click.pressed.connect((n, x, y) => do_button_press_event(x, y));
             ctr_click.end.connect(do_button_release_event);
             ctr_motion.motion.connect(do_motion_notify_event);
         }
