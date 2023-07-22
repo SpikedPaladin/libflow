@@ -233,23 +233,21 @@ namespace Flow {
                         clicked_socket is Sink &&
                         temp_connected_socket is Source
                     ) {
-                        if (!is_suitable_target(socket, temp_connected_socket)) {
+                        if (is_suitable_target(socket, temp_connected_socket)) {
+                            clicked_socket.unlink(temp_connected_socket);
+                            socket.link(temp_connected_socket);
+                        } else
                             temp_connector = null;
-                            return; // Can't link because is no good
-                        }
-                        clicked_socket.unlink(temp_connected_socket);
-                        socket.link(temp_connected_socket);
                     
                     // Link Sockets
                     } else if (
                         socket is Source && temp_connected_socket is Sink ||
                         socket is Sink && temp_connected_socket is Source
                     ) {
-                        if (!is_suitable_target(socket, temp_connected_socket)) {
+                        if (is_suitable_target(socket, temp_connected_socket))
+                            socket.link(temp_connected_socket);
+                        else 
                             temp_connector = null;
-                            return; // Can't link because is no good
-                        }
-                        socket.link(temp_connected_socket);
                     }
                     socket.queue_draw();
                 } else {
@@ -259,20 +257,22 @@ namespace Flow {
                         clicked_socket is Sink
                     ) {
                         clicked_socket.unlink(temp_connected_socket);
-                     }
+                    }
                 }
                 
-                queue_draw();
                 clicked_socket = null;
                 temp_connected_socket = null;
                 temp_connector = null;
+                
+                queue_draw();
             }
             
             move_node = null;
             resize_node = null;
-            queue_resize();
             rubberband?.unparent();
             rubberband = null;
+            
+            queue_resize();
             queue_allocate();
         }
         
