@@ -58,7 +58,6 @@ namespace Flow {
             click = new Gtk.GestureClick();
             add_controller(click);
             click.pressed.connect(press_button);
-            changed.connect(cb_changed);
             
             notify["name"].connect(() => {
                 if (label is Gtk.Label)
@@ -150,16 +149,6 @@ namespace Flow {
                 else
                     parent = parent.get_parent();
             }
-        }
-        
-        private void cb_changed(Value? value = null, string? flow_id = null) {
-            var node_view = get_nodeview();
-            
-            if (node_view == null)
-                return;
-            
-            node_view.queue_draw();
-            queue_draw();
         }
         
         protected override void snapshot(Gtk.Snapshot snapshot) {
