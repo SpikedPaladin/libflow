@@ -11,6 +11,7 @@ gnome = import('gnome')
 
 api_version = '1.0'
 lib_name = meson.project_name() + '-' + api_version
+gir_name = 'Flow-' + api_version
 
 subdir('data')
 subdir('src')
