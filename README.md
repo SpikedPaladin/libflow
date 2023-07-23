@@ -3,3 +3,8 @@
 Flow Graph view for Gtk4
 
 ![Screenshot](./result.png)
+
+## Installation
+
+    $ meson setup --prefix=/usr --buildtype=release build
+    $ ninja -C build install
