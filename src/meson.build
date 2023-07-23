@@ -26,6 +26,7 @@ install_data(
 lib = library(
     lib_name,
     
+    compiler_dependency, # Required to build blueprints first
     lib_resources,
     lib_sources,
     dependencies: lib_deps,
