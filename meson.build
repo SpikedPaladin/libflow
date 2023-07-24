@@ -1,7 +1,7 @@
 project(
     'libflow',
     
-    ['c', 'vala'],
+    [ 'c', 'vala' ],
     version: '1.0.0',
     meson_version: '>= 0.50.0',
 )
@@ -15,5 +15,7 @@ gir_name = 'Flow-' + api_version
 
 subdir('data')
 subdir('src')
+
+subdir('tests')
 
 subdir('example')
