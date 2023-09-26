@@ -150,12 +150,12 @@ namespace Flow {
             
             if (resize_node != null) {
                 int d_x, d_y;
-                Gtk.Allocation node_alloc;
+                Graphene.Rect node_bounds;
                 
-                resize_node.get_allocation(out node_alloc);
+                resize_node.compute_bounds(this, out node_bounds);
                 
-                d_x = (int) (x - resize_node.click_offset_x-node_alloc.x);
-                d_y = (int) (y - resize_node.click_offset_y-node_alloc.y);
+                d_x = (int) (x - resize_node.click_offset_x - node_bounds.origin.x);
+                d_y = (int) (y - resize_node.click_offset_y - node_bounds.origin.y);
                 
                 int new_width = (int) resize_node.resize_start_width + d_x;
                 int new_height = (int) resize_node.resize_start_height + d_y;
@@ -177,13 +177,12 @@ namespace Flow {
                 rubberband.process_motion(get_layout(rubberband), (int) x, (int) y);
                 
                 foreach (var node in get_nodes()) {
-                    Gtk.Allocation node_alloc, rubberband_alloc;
-                    Gdk.Rectangle result;
+                    Graphene.Rect node_bounds, rubberband_bounds, result;
                     
-                    node.get_allocation(out node_alloc);
-                    rubberband.get_allocation(out rubberband_alloc);
-                    node_alloc.intersect(rubberband_alloc, out result);
-                    node.selected = result.width > 0 && result.height > 0;
+                    node.compute_bounds(this, out node_bounds);
+                    rubberband.compute_bounds(this, out rubberband_bounds);
+                    node_bounds.intersection(rubberband_bounds, out result);
+                    node.selected = result.size.width > 0 && result.size.height > 0;
                 }
             }
         }

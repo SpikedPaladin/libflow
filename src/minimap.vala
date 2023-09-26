@@ -111,36 +111,32 @@ namespace Flow {
          */
         public override void snapshot(Gtk.Snapshot snapshot) {
             Graphene.Rect rect;
-            Gtk.Allocation own_alloc;
-            get_allocation(out own_alloc);
             
             if (_nodeview != null) {
-                Gtk.Allocation nv_alloc;
-                _nodeview.get_allocation(out nv_alloc);
                 offset_x = 0;
                 offset_y = 0;
                 int height = 0;
                 int width = 0;
-                if (own_alloc.width > own_alloc.height) {
-                    width = (int) ((double) nv_alloc.width / nv_alloc.height * own_alloc.height);
-                    height = own_alloc.height;
-                    offset_x = (own_alloc.width - width ) / 2;
+                if (get_width() > get_height()) {
+                    width = (int) ((double) _nodeview.get_width() / _nodeview.get_height() * get_height());
+                    height = get_height();
+                    offset_x = (get_width() - width) / 2;
                 } else {
-                    height = (int) ((double) nv_alloc.height / nv_alloc.width * own_alloc.width);
-                    width = own_alloc.width;
-                    offset_y = (own_alloc.height - height ) / 2;
+                    height = (int) ((double) _nodeview.get_height() / _nodeview.get_width() * get_width());
+                    width = get_width();
+                    offset_y = (get_height() - height) / 2;
                 }
-                ratio = (double) nv_alloc.width / width;
+                ratio = (double) _nodeview.get_width() / width;
                 
-                for (var child = nodeview.get_first_child(); child != null; child = child.get_next_sibling()) {
+                for (var child = _nodeview.get_first_child(); child != null; child = child.get_next_sibling()) {
                     if (!(child is NodeRenderer))
                         continue;
                     
                     var node = (Node) child;
                     
-                    Gtk.Allocation alloc;
-                    node.get_allocation(out alloc);
                     Gdk.RGBA color;
+                    Graphene.Rect bounds;
+                    node.compute_bounds(_nodeview, out bounds);
                     
                     if (node.highlight_color != null) {
                         color = node.highlight_color;
@@ -149,24 +145,21 @@ namespace Flow {
                     }
                     
                     rect = Graphene.Rect().init(
-                        (int) (offset_x + alloc.x / ratio),
-                        (int) (offset_y + alloc.y / ratio),
-                        (int) (alloc.width / ratio),
-                        (int) (alloc.height / ratio)
+                        (int) (offset_x + bounds.origin.x / ratio),
+                        (int) (offset_y + bounds.origin.y / ratio),
+                        (int) (bounds.size.width / ratio),
+                        (int) (bounds.size.height / ratio)
                     );
                     
                     snapshot.append_color(color, rect);
                 }
                 if (_scrolledwindow != null) {
-                    Gtk.Allocation sw_alloc;
-                    _scrolledwindow.get_allocation(out sw_alloc);
-                    
-                    if (sw_alloc.width < nv_alloc.width || sw_alloc.height < nv_alloc.height) {
+                    if (_scrolledwindow.get_width() < _nodeview.get_width() || _scrolledwindow.get_height() < _nodeview.get_height()) {
                         rect = Graphene.Rect().init(
                             (int) (offset_x + _scrolledwindow.hadjustment.value / ratio),
                             (int) (offset_y + _scrolledwindow.vadjustment.value / ratio),
-                            (int) (sw_alloc.width / ratio),
-                            (int) (sw_alloc.height / ratio)
+                            (int) (_scrolledwindow.get_width() / ratio),
+                            (int) (_scrolledwindow.get_height() / ratio)
                         );
                         
                         snapshot.append_color({ 0.0f, 0.2f, 0.6f, 0.5f }, rect);
