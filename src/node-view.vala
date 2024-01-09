@@ -359,10 +359,6 @@ namespace Flow {
                 snapshot_child(child, snapshot);
             }
             
-            var cairo = snapshot.append_cairo(
-                Graphene.Rect().init(0, 0, (float) get_width(), (float) get_height())
-            );
-            
             foreach (var node in get_nodes()) {
                 Graphene.Point sink_point, source_point;
                 
@@ -377,9 +373,8 @@ namespace Flow {
                         sink.compute_point(this, { 8, 8 }, out sink_point);
                         source.compute_point(this, { 8, 8 }, out source_point);
                         
-                        renderer.render_connection(
-                            cairo,
-                            
+                        renderer.snapshot_connection(
+                            snapshot,
                             source, sink,
                             {
                                 (int) source_point.x, (int) source_point.y,
@@ -390,14 +385,8 @@ namespace Flow {
                 }
             }
             draw_minimap();
-            if (temp_connector != null) {
-                renderer.render_temp_connection(
-                    cairo,
-                    
-                    temp_connected_socket,
-                    temp_connector
-                );
-            }
+            if (temp_connector != null)
+                renderer.snapshot_temp_connector(snapshot, temp_connected_socket, temp_connector);
             
             // Snapshot rubberband over all widgets & custom drawing
             if (rubberband != null)
