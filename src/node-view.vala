@@ -377,8 +377,6 @@ namespace Flow {
                         sink.compute_point(this, { 8, 8 }, out sink_point);
                         source.compute_point(this, { 8, 8 }, out source_point);
                         
-                        cairo.save();
-                        
                         renderer.render_connection(
                             cairo,
                             
@@ -388,24 +386,17 @@ namespace Flow {
                                 (int) (sink_point.x - source_point.x), (int) (sink_point.y - source_point.y)
                             }
                         );
-                        
-                        cairo.restore();
                     }
                 }
             }
             draw_minimap();
             if (temp_connector != null) {
-                
-                cairo.save();
-                
                 renderer.render_temp_connection(
                     cairo,
                     
                     temp_connected_socket,
                     temp_connector
                 );
-                
-                cairo.restore();
             }
             
             // Snapshot rubberband over all widgets & custom drawing
