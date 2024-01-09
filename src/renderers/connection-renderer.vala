@@ -10,7 +10,7 @@ namespace Flow {
         }
         
         public virtual void render_connection(Cairo.Context cairo, Socket start, Socket end, Gdk.Rectangle rect) {
-            Cairo.Pattern pattern = new Cairo.Pattern.linear(
+            var pattern = new Cairo.Pattern.linear(
                 rect.x, rect.y,
                 rect.width + rect.x,
                 rect.height + rect.y
@@ -26,6 +26,7 @@ namespace Flow {
                 end.color.red, end.color.green, end.color.blue, end.color.alpha
             );
             
+            cairo.set_line_width(start.line_width);
             cairo.set_source(pattern);
             
             render_curve(cairo, rect);
