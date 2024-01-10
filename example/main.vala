@@ -1,8 +1,10 @@
 public class NumberGeneratorNode : Flow.Node {
     
     public NumberGeneratorNode() {
-        set_label_name("NumberGenerator");
-        highlight_color = { 0.6f, 1, 0, 0.3f };
+        add_css_class("green");
+        title_style = Flow.TitleStyle.SEPARATOR;
+        set_label_name("NumberGenerator", Gtk.Align.START);
+        highlight_color = { 0.20F, 0.82F, 0.48F, 0.3F };
         
         var number_source = new Flow.Source.with_type(Type.DOUBLE) {
             color = { 1, 1, 0, 1 },
@@ -29,8 +31,10 @@ public class OperationNode : Flow.Node {
     private Flow.Source result;
     
     public OperationNode() {
-        set_label_name("Operation");
-        highlight_color = { 0.6f, 0, 1, 0.3f };
+        add_css_class("yellow");
+        title_style = Flow.TitleStyle.SEPARATOR;
+        set_label_name("Operation", Gtk.Align.START);
+        highlight_color = { 0.96F, 0.83F, 0.18F, 0.3F };
         
         result = new Flow.Source.with_type(Type.DOUBLE) {
             color = { 1, 0, 1, 1 },
@@ -96,8 +100,10 @@ public class PrintNode : Flow.Node {
     public Gtk.Label label;
     
     public PrintNode() {
-        set_label_name("Output");
-        highlight_color = { 0.6f , 1, 1, 0.3f };
+        add_css_class("blue");
+        title_style = Flow.TitleStyle.SEPARATOR;
+        set_label_name("Output", Gtk.Align.START);
+        highlight_color = { 0.21F, 0.52F, 0.89F, 0.3f };
         
         var number = new Flow.Sink.with_type(Type.DOUBLE) {
             color = { 0, 0, 1, 1 },
@@ -138,6 +144,7 @@ public class AdvancedCalculatorWindow : Gtk.ApplicationWindow {
         init_header_bar();
         init_window_layout();
         init_actions();
+        init_stylesheet();
     }
     
     private void init_header_bar() {
@@ -172,6 +179,29 @@ public class AdvancedCalculatorWindow : Gtk.ApplicationWindow {
         add_number_node_action();
         add_operation_node_action();
         add_print_node_action();
+    }
+    
+    private void init_stylesheet() {
+        var provider = new Gtk.CssProvider();
+        provider.load_from_string(
+            """node.green #title-container {
+                   background-color: alpha(@green_3, 0.2);
+                   color: @green_3;
+               }
+               node.yellow #title-container {
+                   background-color: alpha(@yellow_3, 0.2);
+                   color: @yellow_3;
+               }
+               node.blue #title-container {
+                   background-color: alpha(@blue_3, 0.2);
+                   color: @blue_3;
+               }
+            """
+        );
+        
+		Gtk.StyleContext.add_provider_for_display(
+            Gdk.Display.get_default(), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+		);
     }
     
     private void add_number_node_action() {
