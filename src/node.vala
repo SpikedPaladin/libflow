@@ -125,7 +125,8 @@ namespace Flow {
         private void begin_drag(double x, double y) {
             var picked_widget = pick(x,y, Gtk.PickFlags.NON_TARGETABLE);
             
-            if (picked_widget is Socket) return;
+            if (picked_widget != this && !can_drag(picked_widget))
+                return;
             
             Gdk.Rectangle resize_area = { get_width() - 8, get_height() - 8, 8, 8 };
             var node_view = get_parent() as NodeView;
@@ -342,6 +343,29 @@ namespace Flow {
             foreach (Sink sink in sinks)
                 sink.unlink_all();
         }
+        
+        private bool can_drag(Gtk.Widget widget) {
+            if (!has_gestures(widget)) {
+                for (var parent = widget.get_parent(); parent != this; parent = parent.get_parent()) {
+                    if (has_gestures(parent)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
+        
+        private bool has_gestures(Gtk.Widget widget) {
+            var list = widget.observe_controllers();
+            for (int i = 0; i < list.get_n_items(); i++)
+                if (list.get_item(i) is Gtk.Gesture)
+                    return true;
+            
+            return false;
+        }
+        
+        private delegate bool WidgetCheckDelegate(Gtk.Widget widget);
     }
     
     public abstract class NodeRenderer : Gtk.Widget {
