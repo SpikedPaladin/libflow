@@ -12,18 +12,25 @@ node:selected {
     background-color: alpha(@accent_color, 0.2);
 }
 
-node > #node-container {
-    margin: 10px;
+node #title-container {
+    border-radius: 12px 12px 0px 0px;
+    padding: 10px;
 }
 
 node #socket-container {
-    margin-top: 5px;
-    margin-bottom: 5px;
+    padding: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     border-spacing: 5px;
 }
 
 node #sink-container, #source-container {
     border-spacing: 5px;
+}
+
+node #content {
+    padding: 10px;
+    padding-top: 0px;
 }
 
 rubberband {

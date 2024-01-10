@@ -8,9 +8,9 @@ namespace Flow {
         private Gtk.Widget _title_widget;
         private Gtk.Widget _content;
         private bool _selected;
+        
         [GtkChild]
         private unowned Gtk.PopoverMenu menu;
-        
         [GtkChild]
         private unowned Gtk.Box main_box;
         [GtkChild]
@@ -19,6 +19,8 @@ namespace Flow {
         private unowned Gtk.Box sink_box;
         [GtkChild]
         private unowned Gtk.Box source_box;
+        [GtkChild]
+        private unowned Gtk.Box content_box;
         public override bool selected {
             get { return _selected; }
             set {
@@ -49,11 +51,14 @@ namespace Flow {
                 if (_content == value)
                     return;
                 
+                content_box.visible = false;
                 _content?.unparent();
                 _content = value;
                 
-                if (_content != null)
-                    main_box.append(_content);
+                if (_content != null) {
+                    content_box.visible = true;
+                    content_box.append(_content);
+                }
             }
         }
         

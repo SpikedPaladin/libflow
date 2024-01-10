@@ -26,6 +26,12 @@ template $FlowNode : $FlowNodeRenderer {
                 orientation: vertical;
             }
         }
+        
+        Box content_box {
+            name: "content";
+            orientation: vertical;
+            visible: false;
+        }
     }
     
     PopoverMenu menu {
