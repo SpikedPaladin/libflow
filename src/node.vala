@@ -106,8 +106,8 @@ namespace Flow {
             set_layout_manager(new Gtk.BinLayout());
         }
         
-        public void set_label_name(string name, bool bold = true) {
-            var label = new Gtk.Label(name);
+        public void set_label_name(string name, Gtk.Align halign = Gtk.Align.CENTER, bool bold = true) {
+            var label = new Gtk.Label(name) { halign = halign };
             
             if (bold)
                 label.set_markup(@"<b>$name</b>");
