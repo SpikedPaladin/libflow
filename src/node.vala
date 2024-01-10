@@ -122,18 +122,10 @@ namespace Flow {
         }
         
         [GtkCallback]
-        private void press_button(int n_click, double x, double y) {
+        private void begin_drag(double x, double y) {
             var picked_widget = pick(x,y, Gtk.PickFlags.NON_TARGETABLE);
             
-            Gtk.Widget parent_widget = picked_widget.get_parent();
-            bool do_processing = false;
-            if (picked_widget == this || picked_widget == parent_widget) {
-                do_processing = true;
-            } else if (picked_widget is Gtk.Label || picked_widget is Gtk.Image) {
-                do_processing = true;
-            }
-            
-            if (!do_processing) return;
+            if (picked_widget is Socket) return;
             
             Gdk.Rectangle resize_area = { get_width() - 8, get_height() - 8, 8, 8 };
             var node_view = get_parent() as NodeView;
@@ -148,6 +140,14 @@ namespace Flow {
             
             click_offset_x = x;
             click_offset_y = y;
+        }
+        
+        [GtkCallback]
+        private void end_drag() {
+            var node_view = get_parent() as NodeView;
+            
+            node_view.resize_node = null;
+            node_view.move_node = null;
         }
         
         [GtkCallback]

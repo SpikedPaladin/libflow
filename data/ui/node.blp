@@ -33,9 +33,9 @@ template $FlowNode : $FlowNodeRenderer {
         menu-model: delete_menu;
     }
     
-    GestureClick primary_click {
-        button: 1;
-        pressed => $press_button();
+    GestureDrag drag {
+        drag-begin => $begin_drag();
+        drag-end => $end_drag();
     }
     
     GestureClick secondary_click {
