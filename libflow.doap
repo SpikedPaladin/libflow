@@ -9,8 +9,8 @@
     <name xml:lang="en">libflow</name>
     <shortdesc xml:lang="en">FlowGraph view for Gtk4</shortdesc>
     <description xml:lang="en">Library to create Flow Graphs for Gtk4</description>
-    <homepage rdf:resource="https://github.com/SpikedPaladin/GtkFlowGraph"/>
-    <bug-database rdf:resource="https://github.com/SpikedPaladin/GtkFlowGraph/issues"/>
+    <homepage rdf:resource="https://github.com/SpikedPaladin/libflow"/>
+    <bug-database rdf:resource="https://github.com/SpikedPaladin/libflow/issues"/>
     
     <programming-language>Vala</programming-language>
     
