@@ -6,5 +6,11 @@ Flow Graph view for Gtk4
 
 ## Installation
 
+### ArchLinux (AUR)
+
+    $ yay -S libflow-git
+
+### Build manualy
+
     $ meson setup --prefix=/usr --buildtype=release build
     $ ninja -C build install
