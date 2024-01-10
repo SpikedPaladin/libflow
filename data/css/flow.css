@@ -17,6 +17,15 @@ node #title-container {
     padding: 10px;
 }
 
+node #title-container.shadow {
+    box-shadow: 0 1px rgba(0,0,0,0.18), 0 2px 4px rgba(0,0,0,0.18);
+    background-color: @card_bg_color;
+}
+
+node #title-container.separator {
+    border-bottom: 1px solid alpha(currentColor,0.15);
+}
+
 node #socket-container {
     padding: 10px;
     padding-top: 5px;
@@ -36,3 +45,4 @@ node #content {
 rubberband {
     border-radius: 8px;
 }
+

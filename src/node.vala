@@ -1,11 +1,18 @@
 namespace Flow {
     
+    public enum TitleStyle {
+        FLAT,
+        SHADOW,
+        SEPARATOR;
+    }
+    
     [GtkTemplate (ui = "/me/paladin/libflow/ui/node.ui")]
     public class Node : NodeRenderer {
         private List<Source> sources = new List<Source>();
         private List<Sink> sinks = new List<Sink>();
         
         private Gtk.Widget _title_widget;
+        private TitleStyle _title_style = TitleStyle.FLAT;
         private Gtk.Widget _content;
         private bool _selected;
         
@@ -43,6 +50,23 @@ namespace Flow {
                 
                 if (_title_widget != null)
                     title_box.append(_title_widget);
+            }
+        }
+        public TitleStyle title_style {
+            get { return _title_style; }
+            set {
+                _title_style = value;
+                switch (value) {
+                    case TitleStyle.FLAT:
+                        title_box.css_classes = {};
+                        break;
+                    case TitleStyle.SHADOW:
+                        title_box.css_classes = { "shadow" };
+                        break;
+                    case TitleStyle.SEPARATOR:
+                        title_box.css_classes = { "separator" };
+                        break;
+                }
             }
         }
         public Gtk.Widget content {
