@@ -77,7 +77,7 @@ namespace Flow {
             base.dispose();
         }
         
-        private NodeViewLayoutChild get_layout(Gtk.Widget widget) {
+        public NodeViewLayoutChild get_layout(Gtk.Widget widget) {
             return (NodeViewLayoutChild) layout_manager.get_layout_child(widget);
         }
         
@@ -94,7 +94,7 @@ namespace Flow {
             return result;
         }
         
-        private List<unowned NodeRenderer> get_selected_nodes() {
+        public List<unowned NodeRenderer> get_selected_nodes() {
             var result = new List<unowned NodeRenderer>();
             
             foreach (var node in get_nodes()) {
