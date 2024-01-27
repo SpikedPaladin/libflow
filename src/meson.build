@@ -11,6 +11,7 @@ lib_sources = files(
     'sink.vala',
     'socket.vala',
     'source.vala',
+    'title-style.vala',
     
     'renderers/connection-renderer.vala',
     'renderers/socket-renderer.vala',
