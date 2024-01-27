@@ -207,10 +207,7 @@ public class AdvancedCalculatorWindow : Gtk.ApplicationWindow {
     private void add_number_node_action() {
         var button = new Gtk.Button.with_label("NumberGenerator");
         button.clicked.connect(() => {
-            var node = new NumberGeneratorNode();
-            
-            node_view.add(node);
-            node_view.move(node, 20, 20);
+            node_view.add(new NumberGeneratorNode() { x = 20, y = 20 });
         });
         button.set_has_frame(false);
         menu_content.append(button);
@@ -219,10 +216,7 @@ public class AdvancedCalculatorWindow : Gtk.ApplicationWindow {
     private void add_operation_node_action() {
         var button = new Gtk.Button.with_label("Operation");
         button.clicked.connect(() => {
-            var node = new OperationNode();
-            
-            node_view.add(node);
-            node_view.move(node, 200, 20);
+            node_view.add(new OperationNode() { x = 200, y = 20 });
         });
         button.set_has_frame(false);
         menu_content.append(button);
@@ -231,10 +225,7 @@ public class AdvancedCalculatorWindow : Gtk.ApplicationWindow {
     private void add_print_node_action() {
         var button = new Gtk.Button.with_label("Print");
         button.clicked.connect(() => {
-            var node = new PrintNode();
-            
-            node_view.add(node);
-            node_view.move(node, 400, 20);
+            node_view.add(new PrintNode() { x = 400, y = 20 });
         });
         button.set_has_frame(false);
         menu_content.append(button);

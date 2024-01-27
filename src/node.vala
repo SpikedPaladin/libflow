@@ -104,6 +104,10 @@ namespace Flow {
         
         construct {
             set_layout_manager(new Gtk.BinLayout());
+            
+            notify["x"].connect(update_position);
+            notify["y"].connect(update_position);
+            notify["parent"].connect(update_position);
         }
         
         public void set_label_name(string name, Gtk.Align halign = Gtk.Align.CENTER, bool bold = true) {
@@ -385,6 +389,18 @@ namespace Flow {
             
             return false;
         }
+        
+        private void update_position() {
+             var node_view = get_parent() as NodeView;
+             
+             if (node_view == null)
+                 return;
+             
+             var layout = node_view.get_layout(this);
+             
+             layout.x = x;
+             layout.y = y;
+        }
     }
     
     public abstract class NodeRenderer : Gtk.Widget {
@@ -403,6 +419,8 @@ namespace Flow {
          */
         public bool resizable { get; set; default = true; }
         public Gdk.RGBA? highlight_color { get; set; default = null; }
+        public int x { get; set; default = 0; }
+        public int y { get; set; default = 0; }
         /**
          * Click offset: x coordinate
          *

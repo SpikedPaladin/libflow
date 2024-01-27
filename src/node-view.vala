@@ -107,13 +107,6 @@ namespace Flow {
             return result;
         }
         
-        public void move(NodeRenderer node, int x, int y) {
-            var layout = get_layout(node);
-            
-            layout.x = x;
-            layout.y = y;
-        }
-        
         private int round_to_multiply(int number, int multiply) {
             return (int) (multiply * Math.round(number / multiply));
         }
@@ -135,9 +128,8 @@ namespace Flow {
             y = start_y + offset_y;
             
             if (move_node != null) {
-                var layout = get_layout(move_node);
-                int old_x = layout.x;
-                int old_y = layout.y;
+                int old_x = move_node.x;
+                int old_y = move_node.y;
                 
                 int new_x = ((int) x - (int) move_node.click_offset_x);
                 int new_y = ((int) y - (int) move_node.click_offset_y);
@@ -148,16 +140,15 @@ namespace Flow {
                 if (new_x < 0) new_x = 0;
                 if (new_y < 0) new_y = 0;
                 
-                layout.x = _grid_size == 1 ? new_x : round_to_multiply(new_x, _grid_size);
-                layout.y = _grid_size == 1 ? new_y : round_to_multiply(new_y, _grid_size);
+                move_node.x = _grid_size == 1 ? new_x : round_to_multiply(new_x, _grid_size);
+                move_node.y = _grid_size == 1 ? new_y : round_to_multiply(new_y, _grid_size);
                 
                 if (move_node.selected) {
                     foreach (NodeRenderer node in get_selected_nodes()) {
                         if (node == move_node) continue;
                         
-                        var selected_layout = get_layout(node);
-                        selected_layout.x -= old_x - layout.x;
-                        selected_layout.y -= old_y - layout.y;
+                        node.x -= old_x - node.x;
+                        node.y -= old_y - node.y;
                     }
                 }
                 
