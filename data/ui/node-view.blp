@@ -2,14 +2,10 @@ using Gtk 4.0;
 
 template $FlowNodeView : Widget {
     
-    EventControllerMotion motion {
-        motion => $process_motion();
-    }
-    
-    GestureClick primary_click {
-        button: 1;
-        pressed => $start_selection();
-        released => $end_temp_connector();
+    GestureDrag drag {
+        drag-begin => $start_drag();
+        drag-update => $process_drag();
+        drag-end => $stop_drag();
     }
     
     GestureClick secondary_click {

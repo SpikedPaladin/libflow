@@ -2,6 +2,8 @@ namespace Flow {
     
     [GtkTemplate (ui = "/me/paladin/libflow/ui/node-view.ui")]
     public class NodeView : Gtk.Widget {
+        [GtkChild]
+        private unowned Gtk.GestureDrag drag;
         private Gtk.Popover menu;
         private Gtk.Widget _menu_content;
         private int _grid_size = 1;
@@ -117,7 +119,21 @@ namespace Flow {
         }
         
         [GtkCallback]
-        private void process_motion(double x, double y) {
+        private void start_drag(double x, double y) {
+            if (pick(x, y, Gtk.PickFlags.DEFAULT) == this) {
+                rubberband?.unparent();
+                rubberband = new Rubberband((int) x, (int) y);
+                rubberband.set_parent(this);
+            }
+        }
+        
+        [GtkCallback]
+        private void process_drag(double offset_x, double offset_y) {
+            double start_x, start_y, x, y;
+            drag.get_start_point(out start_x, out start_y);
+            x = start_x + offset_x;
+            y = start_y + offset_y;
+            
             if (move_node != null) {
                 var layout = get_layout(move_node);
                 int old_x = layout.x;
@@ -188,38 +204,12 @@ namespace Flow {
         }
         
         [GtkCallback]
-        private void start_selection(int n_clicks, double x, double y) {
-            if (pick(x, y, Gtk.PickFlags.DEFAULT) == this) {
-                rubberband?.unparent();
-                rubberband = new Rubberband((int) x, (int) y);
-                rubberband.set_parent(this);
-            }
-        }
-        
-        [GtkCallback]
-        private void open_menu(int n_clicks, double x, double y) {
-            menu.set_pointing_to({ (int) x, (int) y, 1, 1 });
-            menu.popup();
-        }
-        
-        internal void start_temp_connector(Socket socket) {
-            clicked_socket = socket;
-            if (socket is Sink && socket.is_linked()) {
-                var sink = (Sink) socket;
-                
-                temp_connected_socket = sink.sources.last().nth_data(0);
-            } else {
-                temp_connected_socket = socket;
-            }
+        private void stop_drag(double offset_x, double offset_y) {
+            double start_x, start_y, x, y;
+            drag.get_start_point(out start_x, out start_y);
+            x = start_x + offset_x;
+            y = start_y + offset_y;
             
-            Graphene.Point point;
-            temp_connected_socket.compute_point(this, { 8, 8 }, out point);
-            
-            temp_connector = { (int) point.x, (int) point.y, 0, 0 };
-        }
-        
-        [GtkCallback]
-        internal void end_temp_connector(int n_clicks, double x, double y) {
             if (temp_connector != null) {
                 var widget = pick(x, y, Gtk.PickFlags.DEFAULT);
                 
@@ -273,6 +263,28 @@ namespace Flow {
             
             queue_resize();
             queue_allocate();
+        }
+        
+        [GtkCallback]
+        private void open_menu(int n_clicks, double x, double y) {
+            menu.set_pointing_to({ (int) x, (int) y, 1, 1 });
+            menu.popup();
+        }
+        
+        internal void start_temp_connector(Socket socket) {
+            clicked_socket = socket;
+            if (socket is Sink && socket.is_linked()) {
+                var sink = (Sink) socket;
+                
+                temp_connected_socket = sink.sources.last().nth_data(0);
+            } else {
+                temp_connected_socket = socket;
+            }
+            
+            Graphene.Point point;
+            temp_connected_socket.compute_point(this, { 8, 8 }, out point);
+            
+            temp_connector = { (int) point.x, (int) point.y, 0, 0 };
         }
         
         /**

@@ -173,14 +173,6 @@ namespace Flow {
         }
         
         [GtkCallback]
-        private void end_drag() {
-            var node_view = get_parent() as NodeView;
-            
-            node_view.resize_node = null;
-            node_view.move_node = null;
-        }
-        
-        [GtkCallback]
         private void open_menu(int n_clicks, double x, double y) {
             menu.set_pointing_to({ (int) x, (int) y, 1, 1 });
             menu.popup();
