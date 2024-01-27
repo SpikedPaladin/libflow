@@ -137,7 +137,7 @@ namespace Flow {
         }
         
         private NodeView? get_nodeview() {
-            var parent = get_parent();
+            var parent = parent;
             
             while (true) {
                 if (parent == null)
@@ -147,7 +147,7 @@ namespace Flow {
                     return (NodeView) parent;
                 
                 else
-                    parent = parent.get_parent();
+                    parent = parent.parent;
             }
         }
         

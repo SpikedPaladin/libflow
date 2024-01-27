@@ -47,12 +47,12 @@ namespace Flow {
                 } else {
                     _nodeview = value;
                     _scrolledwindow = null;
-                    if (value.get_parent() is Gtk.ScrolledWindow) {
-                        _scrolledwindow = value.get_parent() as Gtk.ScrolledWindow;
+                    if (value.parent is Gtk.ScrolledWindow) {
+                        _scrolledwindow = value.parent as Gtk.ScrolledWindow;
                     } else {
-                        if (value.get_parent() is Gtk.Viewport) {
-                            if (value.get_parent().get_parent() is Gtk.ScrolledWindow) {
-                                _scrolledwindow = value.get_parent().get_parent() as Gtk.ScrolledWindow;
+                        if (value.parent is Gtk.Viewport) {
+                            if (value.parent.parent is Gtk.ScrolledWindow) {
+                                _scrolledwindow = value.parent.parent as Gtk.ScrolledWindow;
                                 hadjustment_signal = _scrolledwindow.hadjustment.notify["value"].connect(queue_draw);
                                 vadjustment_signal = _scrolledwindow.vadjustment.notify["value"].connect(queue_draw);
                             }

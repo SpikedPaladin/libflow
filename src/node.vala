@@ -120,7 +120,7 @@ namespace Flow {
         }
         
         public virtual void @delete() {
-            var node_view = get_parent() as NodeView;
+            var node_view = parent as NodeView;
             
             node_view.remove(this);
         }
@@ -162,7 +162,7 @@ namespace Flow {
                 return;
             
             Gdk.Rectangle resize_area = { get_width() - 8, get_height() - 8, 8, 8 };
-            var node_view = get_parent() as NodeView;
+            var node_view = parent as NodeView;
             
             if (resize_area.contains_point((int) x, (int) y)) {
                 node_view.resize_node = this;
@@ -371,7 +371,7 @@ namespace Flow {
         
         private bool can_drag(Gtk.Widget widget) {
             if (!has_gestures(widget)) {
-                for (var parent = widget.get_parent(); parent != this; parent = parent.get_parent()) {
+                for (var parent = widget.parent; parent != this; parent = parent.parent) {
                     if (has_gestures(parent)) {
                         return false;
                     }
@@ -391,7 +391,7 @@ namespace Flow {
         }
         
         private void update_position() {
-             var node_view = get_parent() as NodeView;
+             var node_view = parent as NodeView;
              
              if (node_view == null)
                  return;
