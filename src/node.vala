@@ -385,8 +385,6 @@ namespace Flow {
             
             return false;
         }
-        
-        private delegate bool WidgetCheckDelegate(Gtk.Widget widget);
     }
     
     public abstract class NodeRenderer : Gtk.Widget {
