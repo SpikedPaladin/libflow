@@ -147,8 +147,8 @@ namespace Flow {
                     foreach (NodeRenderer node in get_selected_nodes()) {
                         if (node == move_node) continue;
                         
-                        node.x -= old_x - node.x;
-                        node.y -= old_y - node.y;
+                        node.x -= old_x - move_node.x;
+                        node.y -= old_y - move_node.y;
                     }
                 }
                 
