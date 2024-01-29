@@ -1,7 +1,8 @@
 namespace Flow {
     
-    
     protected class Rubberband : Gtk.Widget {
+        private NodeViewLayoutChild layout;
+        
         public int start_x { get; construct set; }
         public int start_y { get; construct set; }
         
@@ -9,23 +10,18 @@ namespace Flow {
             set_css_name("rubberband");
         }
         
-        public Rubberband(int x, int y) {
-            start_x = x;
-            start_y = y;
-        }
-        
-        public new void set_parent(NodeView parent) {
-            base.set_parent(parent);
+        public Rubberband(NodeView parent, double x, double y) {
+            set_parent(parent);
             
-            var layout = (NodeViewLayoutChild) parent.layout_manager.get_layout_child(this);
-            layout.x = start_x;
-            layout.y = start_y;
+            layout = parent.get_layout(this);
+            layout.x = start_x = (int) x;
+            layout.y = start_y = (int) y;
         }
         
-        public void process_motion(NodeViewLayoutChild layout, int x, int y) {
+        public void process_motion(double x, double y) {
             Gdk.Rectangle selection = {
                 start_x, start_y,
-                (x - start_x), (y - start_y)
+                (int) x, (int) y
             };
             
             if (selection.width < 0) {

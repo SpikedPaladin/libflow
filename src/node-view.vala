@@ -115,8 +115,7 @@ namespace Flow {
         private void start_drag(double x, double y) {
             if (pick(x, y, Gtk.PickFlags.DEFAULT) == this) {
                 rubberband?.unparent();
-                rubberband = new Rubberband((int) x, (int) y);
-                rubberband.set_parent(this);
+                rubberband = new Rubberband(this, x, y);
             }
         }
         
@@ -181,7 +180,7 @@ namespace Flow {
             }
             
             if (rubberband != null) {
-                rubberband.process_motion(get_layout(rubberband), (int) x, (int) y);
+                rubberband.process_motion(offset_x, offset_y);
                 
                 foreach (var node in get_nodes()) {
                     Graphene.Rect node_bounds, rubberband_bounds, result;
