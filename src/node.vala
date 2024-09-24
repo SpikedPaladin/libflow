@@ -72,21 +72,25 @@ namespace Flow {
         
         static construct {
             set_css_name("node");
-            
-            install_action("node.delete", null, widget => {
-                var node = widget as Node;
-                
-                node.@delete();
-            });
-            
-            install_action("node.unlink-all", null, widget => {
-                var node = widget as Node;
-                
-                node.unlink_all();
-            });
         }
         
         construct {
+            var action_group = new SimpleActionGroup();
+            var delete_action = new SimpleAction("delete", null);
+            delete_action.activate.connect(() => {
+                @delete();
+            });
+            action_group.add_action(delete_action);
+            
+            var unlink_action = new SimpleAction("unlink-all", null);
+            unlink_action.activate.connect(() => {
+                unlink_all();
+            });
+            action_group.add_action(unlink_action);
+            var test_action = new SimpleAction("test", null);
+            
+            insert_action_group("node", action_group);
+            
             set_layout_manager(new Gtk.BinLayout());
             
             notify["x"].connect(update_position);
