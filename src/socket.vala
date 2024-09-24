@@ -19,7 +19,7 @@ namespace Flow {
          * connections in default {@link ConnectionRenderer}. If this Socket holds a {@link Sink} it
          * will have no visible effect.
          */
-        public double line_width { get; set; default = 2; }
+        public float line_width { get; set; default = 2; }
         /**
          * Determines whether this socket is highlighted
          * this is usually triggered when the mouse hovers over it
