@@ -4,18 +4,17 @@ lib_deps = [
 
 lib_sources = files(
     'css-loader.vala',
-    'minimap.vala',
     'node.vala',
     'node-view.vala',
+    'node-view-child.vala',
     'rubberband.vala',
     'sink.vala',
     'socket.vala',
     'source.vala',
     'title-style.vala',
-    
-    'renderers/connection-renderer.vala',
-    'renderers/socket-renderer.vala',
 )
+
+subdir('node-view')
 
 install_data(
     'deps.in',

@@ -3,14 +3,12 @@ public class NumberGeneratorNode : Flow.Node {
     public NumberGeneratorNode() {
         add_css_class("green");
         title_style = Flow.TitleStyle.SEPARATOR;
-        set_label_name("NumberGenerator", Gtk.Align.START);
-        highlight_color = { 0.20F, 0.82F, 0.48F, 0.3F };
+        title = "NumberGenerator";
         
         var number_source = new Flow.Source.with_type(Type.DOUBLE) {
             color = { 1, 1, 0, 1 },
             name = "output"
         };
-        number_source.set_value(0d);
         add_source(number_source);
         
         var spin_button = new Gtk.SpinButton(new Gtk.Adjustment(0, 0, 100, 1, 10, 0), 0, 0);
@@ -33,8 +31,7 @@ public class OperationNode : Flow.Node {
     public OperationNode() {
         add_css_class("yellow");
         title_style = Flow.TitleStyle.SEPARATOR;
-        set_label_name("Operation", Gtk.Align.START);
-        highlight_color = { 0.96F, 0.83F, 0.18F, 0.3F };
+        title = "Operation";
         
         result = new Flow.Source.with_type(Type.DOUBLE) {
             color = { 1, 0, 1, 1 },
@@ -102,8 +99,7 @@ public class PrintNode : Flow.Node {
     public PrintNode() {
         add_css_class("blue");
         title_style = Flow.TitleStyle.SEPARATOR;
-        set_label_name("Output", Gtk.Align.START);
-        highlight_color = { 0.21F, 0.52F, 0.89F, 0.3f };
+        title = "Output";
         
         var number = new Flow.Sink.with_type(Type.DOUBLE) {
             color = { 0, 0, 1, 1 },
@@ -148,10 +144,30 @@ public class AdvancedCalculatorWindow : Gtk.ApplicationWindow {
     }
     
     private void init_header_bar() {
-        set_titlebar(new Gtk.HeaderBar() {
+        Gtk.HeaderBar header;
+        set_titlebar(header = new Gtk.HeaderBar() {
             title_widget = new Gtk.Label("<b>libflow Example</b>") {
                 use_markup = true
             }
+        });
+        
+        Gtk.Button btn;
+        header.pack_start(btn = new Gtk.Button.with_label("Number"));
+        btn.clicked.connect(() => {
+            var node = new NumberGeneratorNode();
+            node.set_parent(node_view);
+        });
+        
+        header.pack_start(btn = new Gtk.Button.with_label("Operation"));
+        btn.clicked.connect(() => {
+            var node = new OperationNode();
+            node.set_parent(node_view);
+        });
+        
+        header.pack_start(btn = new Gtk.Button.with_label("Output"));
+        btn.clicked.connect(() => {
+            var node = new PrintNode();
+            node.set_parent(node_view);
         });
     }
     
@@ -163,18 +179,11 @@ public class AdvancedCalculatorWindow : Gtk.ApplicationWindow {
                 child = this.node_view = new Flow.NodeView()
             }
         });
-        
-        overlay.add_overlay(new Flow.Minimap() {
-            halign = Gtk.Align.END,
-            valign = Gtk.Align.END,
-            nodeview = node_view,
-            can_target = false
-        });
     }
     
     private void init_actions() {
         menu_content = new Gtk.Box(Gtk.Orientation.VERTICAL, 10);
-        node_view.menu_content = menu_content;
+        //node_view.menu_content = menu_content;
         
         add_number_node_action();
         add_operation_node_action();

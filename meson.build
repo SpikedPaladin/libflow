@@ -13,6 +13,7 @@ api_version = '1.0'
 lib_name = meson.project_name() + '-' + api_version
 gir_name = 'Flow-' + api_version
 
+add_project_arguments(['--enable-experimental'], language: 'vala')
 subdir('data')
 subdir('src')
 

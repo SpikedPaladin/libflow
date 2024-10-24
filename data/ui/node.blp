@@ -1,6 +1,7 @@
 using Gtk 4.0;
 
-template $FlowNode : $FlowNodeRenderer {
+template $FlowNode : $FlowNodeViewChild {
+    title: bind title_label.label bidirectional;
     
     Box main_box {
         name: "node-container";
@@ -9,6 +10,10 @@ template $FlowNode : $FlowNodeRenderer {
         Box title_box {
             name: "title-container";
             orientation: vertical;
+            
+            Label title_label {
+                halign: start;
+            }
         }
         
         Box socket_box {
@@ -37,10 +42,6 @@ template $FlowNode : $FlowNodeRenderer {
     PopoverMenu menu {
         has-arrow: false;
         menu-model: delete_menu;
-    }
-    
-    GestureDrag drag {
-        drag-begin => $begin_drag();
     }
     
     GestureClick secondary_click {
