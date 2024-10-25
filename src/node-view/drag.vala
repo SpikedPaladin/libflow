@@ -54,6 +54,15 @@ namespace Flow {
                 var initial_canvas_mouse = get_canvas_point(get_start_mouse());
                 state.process_motion(canvas_mouse.x - initial_canvas_mouse.x, canvas_mouse.y - initial_canvas_mouse.y);
                 
+                foreach_nodes(node => {
+                    Graphene.Rect node_bounds, rubberband_bounds, result;
+                    
+                    node.compute_bounds(this, out node_bounds);
+                    state.rubberband.compute_bounds(this, out rubberband_bounds);
+                    node_bounds.intersection(rubberband_bounds, out result);
+                    node.selected = result.size.width > 0 && result.size.height > 0;
+                });
+                
                 return;
             }
             
