@@ -2,7 +2,7 @@ namespace Flow {
     
     public partial class NodeView {
         
-        public void foreach_childs(ForeachChildFunc func) {
+        public void foreach_childs(ChildFunc func) {
             for (var child = get_first_child(); child != null; child = child.get_next_sibling()) {
                 if (!(child is NodeViewChild))
                     continue;
@@ -11,7 +11,7 @@ namespace Flow {
             }
         }
         
-        public void foreach_nodes(ForeachNodeFunc func) {
+        public void foreach_nodes(NodeFunc func) {
             for (var child = get_first_child(); child != null; child = child.get_next_sibling()) {
                 if (!(child is Node))
                     continue;
@@ -20,7 +20,7 @@ namespace Flow {
             }
         }
         
-        public delegate void ForeachChildFunc(NodeViewChild child);
-        public delegate void ForeachNodeFunc(Node node);
+        public delegate void ChildFunc(NodeViewChild child);
+        public delegate void NodeFunc(Node node);
     }
 }
