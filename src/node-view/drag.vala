@@ -79,9 +79,27 @@ namespace Flow {
             
             if (state is State.Dragging) {
                 var state = (State.Dragging) state;
+                var old_x = state.target.x;
+                var old_y = state.target.y;
                 
                 state.target.x = (canvas_mouse.x - state.offset.x).clamp(0, canvas_width - state.target.get_width());
                 state.target.y = (canvas_mouse.y - state.offset.y).clamp(0, canvas_height - state.target.get_height());
+                
+                if (state.target is Node) {
+                    var move_node = (Node) state.target;
+                    
+                    if (move_node.selected) {
+                        foreach_selected_nodes(node => {
+                            if (move_node != node) {
+                                node.x -= (old_x - move_node.x);
+                                node.y -= (old_y - move_node.y);
+                                
+                                node.x = node.x.clamp(0, canvas_width - node.get_width());
+                                node.y = node.y.clamp(0, canvas_height - node.get_height());
+                            }
+                        });
+                    }
+                }
                 queue_allocate();
             }
         }

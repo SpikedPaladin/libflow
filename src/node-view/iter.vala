@@ -20,6 +20,13 @@ namespace Flow {
             }
         }
         
+        public void foreach_selected_nodes(NodeFunc func) {
+            foreach_nodes(node => {
+                if (node.selected)
+                    func(node);
+            });
+        }
+        
         public delegate void ChildFunc(NodeViewChild child);
         public delegate void NodeFunc(Node node);
     }
