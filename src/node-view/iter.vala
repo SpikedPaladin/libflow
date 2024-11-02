@@ -20,6 +20,19 @@ namespace Flow {
             }
         }
         
+        public List<unowned Node> get_nodes() {
+            var result = new List<unowned Node>();
+            
+            for (var child = get_first_child(); child != null; child = child.get_next_sibling()) {
+                if (!(child is Node))
+                    continue;
+                
+                result.append(child as Node);
+            }
+            
+            return result;
+        }
+        
         public void foreach_selected_nodes(NodeFunc func) {
             foreach_nodes(node => {
                 if (node.selected)

@@ -124,6 +124,7 @@ namespace Flow {
         public void @delete() {
             node_view?.unlink_all(this);
             unparent();
+            node_view = null;
         }
         
         public new void set_parent(Gtk.Widget parent) {
