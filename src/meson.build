@@ -3,7 +3,6 @@ lib_deps = [
 ]
 
 lib_sources = files(
-    'css-loader.vala',
     'main.vala',
     'node.vala',
     'node-view.vala',

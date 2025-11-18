@@ -3,10 +3,6 @@ namespace Flow {
     [GtkTemplate (ui = "/me/paladin/libflow/ui/node-view.ui")]
     public partial class NodeView : Gtk.Widget {
 
-        construct {
-            new CssLoader().ensure();
-        }
-
         public void add(Node node) {
             node.set_parent(this);
         }

@@ -246,6 +246,8 @@ int main(string[] argv) {
         "com.example.GtkApplication",
         ApplicationFlags.FLAGS_NONE
     );
+
+    Flow.init();
     
     app.activate.connect(() => new AdvancedCalculatorWindow(app).present());
     
