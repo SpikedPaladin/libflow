@@ -34,9 +34,7 @@ namespace Flow {
                 _selected = value;
             }
         }
-        public string title {
-            get; set;
-        }
+        public string title { get; set; }
         public TitleStyle title_style {
             get { return _title_style; }
             set {

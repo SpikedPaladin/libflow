@@ -4,6 +4,7 @@ lib_deps = [
 
 lib_sources = files(
     'main.vala',
+    'minimap.vala',
     'node.vala',
     'node-view.vala',
     'node-view-child.vala',

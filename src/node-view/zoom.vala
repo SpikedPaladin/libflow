@@ -41,6 +41,12 @@ namespace Flow {
         public Gtk.ScrollablePolicy vscroll_policy { get; set; }
         public int canvas_width { get; set; default = 5000; }
         public int canvas_height { get; set; default = 5000; }
+        public int actual_width {
+            get { return (int) (canvas_width * zoom_factor); }
+        }
+        public int actual_height {
+            get { return (int) (canvas_height * zoom_factor); }
+        }
 
         public bool get_border(out Gtk.Border border) {
             border = {};
@@ -69,8 +75,8 @@ namespace Flow {
                     natural_size.height,
                     baseline,
                     screen_transform()
-                    .translate({ child.x, child.y })
-                    );
+                        .translate({ child.x, child.y })
+                );
             });
 
             hadjustment.configure(
@@ -80,7 +86,7 @@ namespace Flow {
                 0.1 * width,
                 0.9 * width,
                 width
-                );
+            );
             vadjustment.configure(
                 y,
                 0,
@@ -88,7 +94,7 @@ namespace Flow {
                 0.1 * height,
                 0.9 * height,
                 height
-                );
+            );
         }
     }
 }

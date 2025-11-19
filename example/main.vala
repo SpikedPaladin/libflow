@@ -179,6 +179,12 @@ public class AdvancedCalculatorWindow : Gtk.ApplicationWindow {
                 child = this.node_view = new Flow.NodeView()
             }
         });
+
+        overlay.add_overlay(new Flow.Minimap() {
+            valign = Gtk.Align.END,
+            halign = Gtk.Align.END,
+            node_view = node_view
+        });
     }
     
     private void init_actions() {

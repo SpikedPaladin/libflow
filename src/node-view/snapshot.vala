@@ -30,6 +30,8 @@ namespace Flow {
                 snapshot.pop();
             }
 
+            draw_minimap();
+
             if (state is State.Connecting) {
                 var state = (State.Connecting) state;
                 var stroke = new Gsk.Stroke(2 * zoom_factor);
@@ -64,5 +66,7 @@ namespace Flow {
 
             return builder.to_path();
         }
+
+        internal signal void draw_minimap();
     }
 }
