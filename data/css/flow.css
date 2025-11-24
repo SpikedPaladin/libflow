@@ -15,6 +15,7 @@ node:selected {
 node #title-container {
     border-radius: 12px 12px 0px 0px;
     padding: 10px;
+    font-weight: bold;
 }
 
 node #title-container.shadow {
@@ -28,13 +29,11 @@ node #title-container.separator {
 
 node #socket-container {
     padding: 10px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    border-spacing: 5px;
+    border-spacing: 15px;
 }
 
 node #sink-container, #source-container {
-    border-spacing: 5px;
+    border-spacing: 10px;
 }
 
 node #content {

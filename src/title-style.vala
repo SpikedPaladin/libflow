@@ -1,10 +1,10 @@
 namespace Flow {
-    
+
     public enum TitleStyle {
         FLAT,
         SHADOW,
         SEPARATOR;
-        
+
         public string[] get_css_styles() {
             switch (this) {
                 case TitleStyle.FLAT:

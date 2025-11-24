@@ -1,15 +1,34 @@
 using Gtk 4.0;
 
 template $FlowNodeView : Widget {
+    overflow: hidden;
     
-    GestureDrag drag {
-        drag-begin => $start_drag();
-        drag-update => $process_drag();
-        drag-end => $stop_drag();
+    // Start section drag
+    GestureDrag gesture_drag {
+        drag-begin => $on_drag_begin();
+        drag-update => $on_drag_update();
+        drag-end => $on_drag_end();
+    }
+    // End section drag
+    
+    // Start section input
+    EventControllerScroll gesture_scroll {
+        flags: both_axes;
+        
+        scroll => $on_scroll();
     }
     
-    GestureClick secondary_click {
-        button: 3;
-        pressed => $open_menu();
+    GestureDrag {
+        button: 2;
+        
+        drag-begin => $on_pan_begin();
+        drag-update => $on_pan_update();
+        drag-end => $on_pan_end();
     }
+    
+    GestureZoom gesture_zoom {
+        begin => $on_zoom_begin();
+        scale-changed => $on_zoom_changed();
+    }
+    // End section input
 }
